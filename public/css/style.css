@@ -1,0 +1,48 @@
+/* body{
+    background-color: rgb(237, 171, 182);
+} */
+
+/* nav bar */
+.navbar{
+    background-color: white;
+}
+.fa-compass{
+    color: #fe424d;
+    font-size: 2rem;
+}
+.nav-link{
+    color: #222222 !important;
+}
+/* footer */
+.f-info-links a{
+    text-decoration: none;
+    color: #222222;
+}
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+
+.f-info-links,
+.f-info-social ,
+f-info-brand {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.f-info-social i{
+    margin-right: 1rem;
+    font-size: 1.5rem;
+
+}
+
+.f-info{
+    text-align: center ;
+    background-color: #ebebed;
+    height: 8rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* align-items: space-evenly; */
+    align-content: space-evenly;
+}
