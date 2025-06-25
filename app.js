@@ -82,6 +82,11 @@ app.delete("/listings/:id",async(req,res)=>{
     res.redirect("/listings");
 });
 
+app.use((req,res)=>{
+    let qur = req.query;
+    res.render("listing/erorr.ejs",{qur});
+})
+
 app.listen( 8080,()=>{
     console.log("server is start");
 });

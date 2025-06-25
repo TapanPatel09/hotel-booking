@@ -1,0 +1,300 @@
+<!--  added by me not other  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 Error</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fef7f0 0%, #f8f4f8 50%, #f0f8ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .error-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .illustration {
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 40px;
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 900;
+            color: #FF5A5F;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite;
+            text-shadow: 0 5px 15px rgba(255, 90, 95, 0.2);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .floating-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: floatDot 8s ease-in-out infinite;
+        }
+
+        .dot-1 { 
+            background: rgba(255, 90, 95, 0.3);
+            top: 20%; 
+            left: 15%; 
+            animation-delay: 0s; 
+        }
+        .dot-2 { 
+            background: rgba(255, 183, 77, 0.3);
+            top: 60%; 
+            right: 20%; 
+            animation-delay: 2s; 
+        }
+        .dot-3 { 
+            background: rgba(118, 209, 145, 0.3);
+            top: 30%; 
+            left: 80%; 
+            animation-delay: 4s; 
+        }
+        .dot-4 { 
+            background: rgba(130, 177, 255, 0.3);
+            top: 70%; 
+            left: 10%; 
+            animation-delay: 6s; 
+        }
+
+        @keyframes floatDot {
+            0%, 100% { 
+                transform: translateY(0px) scale(1); 
+                opacity: 0.3;
+            }
+            50% { 
+                transform: translateY(-20px) scale(1.2); 
+                opacity: 0.6;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .illustration { 
+                width: 300px; 
+                height: 300px; 
+            }
+            .error-code { 
+                font-size: 5rem; 
+            }
+        }
+
+        @media (max-width: 480px) {
+            .illustration { 
+                width: 250px; 
+                height: 250px; 
+            }
+            .error-code { 
+                font-size: 4rem; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-dot dot-1"></div>
+        <div class="floating-dot dot-2"></div>
+        <div class="floating-dot dot-3"></div>
+        <div class="floating-dot dot-4"></div>
+    </div>
+
+    <div class="error-container">
+        <div class="illustration">
+            <svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Sky background -->
+                <circle cx="200" cy="200" r="190" fill="url(#skyGradient)" opacity="0.3"/>
+                
+                <!-- Ground -->
+                <ellipse cx="200" cy="350" rx="180" ry="30" fill="rgba(118, 209, 145, 0.2)"/>
+                
+                <!-- Signpost -->
+                <rect x="190" y="200" width="20" height="120" fill="#8B4513" rx="10"/>
+                
+                <!-- Sign arrows -->
+                <g id="signs">
+                    <!-- Arrow 1 -->
+                    <rect x="120" y="210" width="80" height="20" fill="#FF5A5F" rx="10"/>
+                    <polygon points="200,215 215,220 200,225" fill="#FF5A5F"/>
+                    <circle cx="140" cy="220" r="3" fill="white"/>
+                    
+                    <!-- Arrow 2 -->
+                    <rect x="200" y="240" width="80" height="20" fill="#FFB74D" rx="10"/>
+                    <polygon points="280,245 295,250 280,255" fill="#FFB74D"/>
+                    <circle cx="220" cy="250" r="3" fill="white"/>
+                    
+                    <!-- Arrow 3 -->
+                    <rect x="130" y="270" width="70" height="20" fill="#76D191" rx="10"/>
+                    <polygon points="200,275 215,280 200,285" fill="#76D191"/>
+                    <circle cx="150" cy="280" r="3" fill="white"/>
+                </g>
+                
+                <!-- Character body -->
+                <ellipse cx="160" cy="280" rx="25" ry="35" fill="#82B1FF"/>
+                
+                <!-- Character head -->
+                <circle cx="160" cy="230" r="25" fill="#FFCC80"/>
+                
+                <!-- Character hair -->
+                <path d="M135 220 Q160 200 185 220 Q180 210 160 215 Q140 210 135 220" fill="#8D6E63"/>
+                
+                <!-- Character eyes -->
+                <circle cx="152" cy="228" r="3" fill="#333"/>
+                <circle cx="168" cy="228" r="3" fill="#333"/>
+                <circle cx="153" cy="227" r="1" fill="white"/>
+                <circle cx="169" cy="227" r="1" fill="white"/>
+                
+                <!-- Character confused expression -->
+                <path d="M158 238 Q160 242 162 238" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+                
+                <!-- Character arms -->
+                <ellipse cx="140" cy="260" rx="8" ry="20" fill="#FFCC80" transform="rotate(-20 140 260)"/>
+                <ellipse cx="180" cy="260" rx="8" ry="20" fill="#FFCC80" transform="rotate(30 180 260)"/>
+                
+                <!-- Character legs -->
+                <ellipse cx="150" cy="320" rx="8" ry="25" fill="#5D4037"/>
+                <ellipse cx="170" cy="320" rx="8" ry="25" fill="#5D4037"/>
+                
+                <!-- Suitcase -->
+                <rect x="100" y="290" width="35" height="25" fill="#FF5A5F" rx="3"/>
+                <rect x="100" y="290" width="35" height="4" fill="#E53935"/>
+                <circle cx="105" cy="302" r="2" fill="#FFCC80"/>
+                <rect x="115" y="300" width="2" height="8" fill="#E53935"/>
+                
+                <!-- Suitcase handle -->
+                <path d="M108 290 Q108 285 112 285 Q116 285 116 290" stroke="#E53935" stroke-width="2" fill="none"/>
+                
+                <!-- Question marks floating -->
+                <g id="questionMarks" opacity="0.7">
+                    <text x="220" y="200" font-family="Arial" font-size="20" fill="#FF5A5F" opacity="0.8">?</text>
+                    <text x="240" y="180" font-family="Arial" font-size="16" fill="#FFB74D" opacity="0.6">?</text>
+                    <text x="190" y="170" font-family="Arial" font-size="18" fill="#76D191" opacity="0.7">?</text>
+                </g>
+                
+                <!-- Decorative clouds -->
+                <g id="clouds" opacity="0.4">
+                    <ellipse cx="80" cy="80" rx="15" ry="10" fill="white"/>
+                    <ellipse cx="90" cy="80" rx="20" ry="12" fill="white"/>
+                    <ellipse cx="100" cy="80" rx="15" ry="10" fill="white"/>
+                    
+                    <ellipse cx="300" cy="60" rx="12" ry="8" fill="white"/>
+                    <ellipse cx="308" cy="60" rx="16" ry="10" fill="white"/>
+                    <ellipse cx="316" cy="60" rx="12" ry="8" fill="white"/>
+                </g>
+                
+                <defs>
+                    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:0.3" />
+                        <stop offset="100%" style="stop-color:#98FB98;stop-opacity:0.1" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+        
+        <div class="error-code">404</div>
+    </div>
+
+    <script>
+        // Animate question marks
+        function animateQuestionMarks() {
+            const questionMarks = document.getElementById('questionMarks');
+            if (questionMarks) {
+                questionMarks.style.transform = 'translateY(-5px)';
+                setTimeout(() => {
+                    questionMarks.style.transform = 'translateY(0px)';
+                }, 1000);
+            }
+        }
+
+        // Animate signs swaying
+        function animateSigns() {
+            const signs = document.getElementById('signs');
+            if (signs) {
+                signs.style.transform = 'rotate(2deg)';
+                signs.style.transformOrigin = '200px 220px';
+                setTimeout(() => {
+                    signs.style.transform = 'rotate(-1deg)';
+                    setTimeout(() => {
+                        signs.style.transform = 'rotate(0deg)';
+                    }, 800);
+                }, 800);
+            }
+        }
+
+        // Add CSS transitions
+        const style = document.createElement('style');
+        style.textContent = `
+            #questionMarks {
+                transition: transform 1s ease-in-out;
+            }
+            #signs {
+                transition: transform 0.8s ease-in-out;
+            }
+            #clouds {
+                animation: cloudFloat 10s ease-in-out infinite;
+            }
+            @keyframes cloudFloat {
+                0%, 100% { transform: translateX(0px); }
+                50% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Start animations
+        setInterval(animateQuestionMarks, 3000);
+        setInterval(animateSigns, 5000);
+        
+        // Add subtle mouse interaction
+        document.addEventListener('mousemove', (e) => {
+            const illustration = document.querySelector('.illustration');
+            const rect = illustration.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const deltaX = (e.clientX - centerX) / 100;
+            const deltaY = (e.clientY - centerY) / 100;
+            
+            illustration.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+        });
+    </script>
+</body>
+</html>
