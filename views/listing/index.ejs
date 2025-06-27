@@ -1,12 +1,18 @@
 <% layout("/layouts/boylerplate.ejs") %>
-<body>
-    <h1>All Listings</h1>
 
+<body>
+<h1>All Listings</h1>
+
+    <ul style="list-style-type: none; padding: 0;">
     <% for (let listing of alllisting) { %>
-        <li>
-            <a href="/listings/<%= listing._id %>"><%= listing.title %></a><br>
-            <img src="<%= listing.image %>" alt="<%= listing.title %>" width="200" />
-            
+        <li style="margin-bottom: 20px;">
+            <a href="/listings/<%= listing._id %>" style="font-size: 1.2em; font-weight: bold;">
+            <%= listing.title %>
+            </a><br>
+
+            <img src="<%= listing.image %>" alt="<%= listing.title %>" width="300" />
+
         </li>
-    <% } %>
+        <% } %>
+    </ul>
 </body>
