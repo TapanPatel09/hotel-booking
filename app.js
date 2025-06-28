@@ -8,7 +8,8 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapasync = require("./utill/wrapsync.js");
 const ExpressError = require("./utill/expresserror.js");
-// const {ListSchema} = require("./schema.js");
+const { ListSchema } = require("./schema.js");
+
 
 const mongo_url = "mongodb://127.0.0.1:27017/wonderlust";
 
@@ -55,15 +56,28 @@ app.get("/listings/:id", async(req,res)=>{
 
 
 // Create Listing
+// app.post("/listings", wrapasync(async (req, res) => {
+//     console.log("REQ.BODY >>>", req.body);
+//         let result = ListSchema.validate(req.body); 
+//         console.log(result);
+//     const newListing = new listing(req.body.listing); // note: 'listing' not 'Listing'
+//     await newListing.save();
+//     res.redirect("/listings");
+// }));
 app.post("/listings", wrapasync(async (req, res) => {
-    console.log("🔍 Incoming Form Data:", req.body); // Add this
-    let result = ListSchema.validate(req.body); 
-    console.log(result);
-    // console.log("Schema Loaded:", ListSchema);
+    console.log("REQ.BODY >>>", req.body);
+    
+    const { error } = ListSchema.validate(req.body); 
+    if (error) {
+        console.log("Validation Error:", error.details[0].message);
+        throw new Error(error.details[0].message);
+    }
+
     const newListing = new listing(req.body.listing);
     await newListing.save();
     res.redirect("/listings");
 }));
+
 
 
 
