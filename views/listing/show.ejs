@@ -1,20 +1,24 @@
 <% layout("/layouts/boylerplate.ejs") %>
-<body>
-    <h1>listing details:</h1>
-    <ul>
-        <li><%=list.title %></li>
-        <li><%=list.description %></li>      
-        <li>&#8377;<%= list.price.toLocaleString("en-IN") %></li>
-        
-        <li><%=list.location %></li>
-        <li><%=list.country %></li>
-    </ul>
-    <img src="<%= list.image %>" alt="Listing Image" style="width: 300px; height: auto;" />
-    <br>
-    <a href="/listings/<%=list._id %>/edit">edit it</a>
-    <br><br>
-    <form action="/listings/<%=list._id %>?_method=delete" method="post">
-        <button>delete</button>
-    </form>
 
-</body>
+<div class="container mt-5">
+  <h3 class="mb-4">Listing Details</h3>
+
+  <div class="card shadow-sm border-0" style="max-width: 800px; margin: auto; ">
+    <img src="<%= list.image %>" class="card-img-top rounded-top" alt="Listing Image" style="height: 350px; object-fit: cover; border-radius: 30px;" />
+    
+    <div class="card-body">
+      <h5 class="card-title fw-bold"><%= list.title %></h5>
+      <p class="card-text mb-2"><%= list.description %></p>
+      <p class="card-text fw-semibold text-dark">&#8377;<%= list.price.toLocaleString("en-IN") %></p>
+      <p class="card-text text-muted mb-1"><%= list.location %></p>
+      <p class="card-text text-muted"><%= list.country %></p>
+
+      <div class="mt-3">
+        <a href="/listings/<%= list._id %>/edit" class="btn btn-danger me-2">Edit</a>
+        <form action="/listings/<%= list._id %>?_method=DELETE" method="POST" class="d-inline">
+          <button class="btn btn-dark">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

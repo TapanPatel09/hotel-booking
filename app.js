@@ -1,95 +1,112 @@
 const express = require("express");
 const app = express();
+
 const mongoose = require("mongoose");
 const listing = require("./models/listing.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-
-
-app.use(methodOverride("_method"));
-app.use(express.urlencoded({ extended: true }));
-
-
+const wrapasync = require("./utill/wrapsync.js");
+const ExpressError = require("./utill/expresserror.js");
+// const {ListSchema} = require("./schema.js");
 
 const mongo_url = "mongodb://127.0.0.1:27017/wonderlust";
 
-main().then(()=>{
-    console.log("connected to db");
-}).catch((err)=>{
-    console.log("error are fount",err );
-})
+// Connect to MongoDB
+async function main() {
+    await mongoose.connect(mongo_url);
+}
+main()
+    .then(() => console.log("Connected to DB"))
+    .catch((err) => console.log("DB connection error:", err));
 
-async function main(){
-        await mongoose.connect(mongo_url);
-    };  
-app.set("view engine","ejs");
-// app.set('view engine', 'ejs');
-app.set("views",path.join(__dirname,"views"));
-app.use(express.urlencoded({extended:true}));
-app.engine("ejs",ejsMate);
-app.use(express.static(path.join(__dirname,"/public")));
+// Middleware
+app.engine("ejs", ejsMate);
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "/public")));
+app.use(methodOverride("_method"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+// Routes
 
-app.get("/",(req,res)=>{
-    res.send("hi , it's start");
+app.get("/", (req, res) => {
+    res.send("Hi, it's the start");
 });
 
-// index rout
-app.get("/listings",async(req,res)=>{
-    const alllisting = await listing.find({});
-    // console.log(alllisting);
-    res.render("listing/index.ejs", { alllisting });
-});
-
-//new rout
-app.get("/listings/new",(req,res)=>{
+// New Listing Route - IMPORTANT: Must be before :id
+app.get("/listings/new", (req, res) => {
     res.render("listing/new.ejs");
 });
 
-// show rout
+// Index Route
+app.get("/listings", wrapasync(async (req, res) => {
+    const alllisting = await listing.find({});
+    res.render("listing/index.ejs", { alllisting });
+}));
+
+// Show Route
 app.get("/listings/:id", async(req,res)=>{
     let {id} = req.params;
     let list = await listing.findById(id);
     res.render("listing/show.ejs", {list} );
 });
 
-//crete a route
-app.post("/listings",async(req,res)=>{
-    // let {title , description , image ,price,country,location} = req.body;
-    // let listing = req.body.listing;
-    let newlistings = new listing(req.body.listing);
-    await newlistings.save();
-    // console.log(listing);
-    res.redirect("/listings");
-});
 
-//edit route 
-app.get("/listings/:id/edit",async(req,res)=>{
-    let{id} = req.params;
-    let list = await listing.findById(id);
-    res.render("listing/edit.ejs",{list});
-});
-//update rout
-app.put("/listings/:id",async(req,res)=>{
-    let {id} = req.params;
-    console.log(req.body);
-    let list = await listing.findByIdAndUpdate(id,{...req.body.listing});
+// Create Listing
+app.post("/listings", wrapasync(async (req, res) => {
+    console.log("🔍 Incoming Form Data:", req.body); // Add this
+    let result = ListSchema.validate(req.body); 
+    console.log(result);
+    // console.log("Schema Loaded:", ListSchema);
+    const newListing = new listing(req.body.listing);
+    await newListing.save();
+    res.redirect("/listings");
+}));
+
+
+
+// Edit Route
+app.get("/listings/:id/edit", wrapasync(async (req, res) => {
+    let { id } = req.params;
+    const list = await listing.findById(id);
+    if (!list) {
+        throw new ExpressError(404, "Listing not found for editing");
+    }
+    res.render("listing/edit.ejs", { list });
+}));
+
+// Update Route
+app.put("/listings/:id", wrapasync(async (req, res) => {
+    let { id } = req.params;
+    const list = await listing.findByIdAndUpdate(id, { ...req.body.listing });
     res.redirect(`/listings/${id}`);
-});
-//delete 
-app.delete("/listings/:id",async(req,res)=>{
-    let {id} = req.params;
-    const deletelistings = await listing.findByIdAndDelete(id);
-    console.log(deletelistings);
-    res.redirect("/listings");
-});
+}));
 
+// Delete Route
+app.delete("/listings/:id", wrapasync(async (req, res) => {
+    let { id } = req.params;
+    await listing.findByIdAndDelete(id);
+    res.redirect("/listings");
+}));
+
+// Catch-all 404 route
 app.use((req,res)=>{
     let qur = req.query;
     res.render("listing/erorr.ejs",{qur});
 })
+// app.all("*", (req, res, next) => {
+//     next(new ExpressError(404, "Page Not Found"));
+// });
 
-app.listen( 8080,()=>{
-    console.log("server is start");
+// Error-handling middleware
+app.use((err, req, res, next) => {
+    const { statusCode = 500, message = "Something went wrong" } = err;
+    res.status(statusCode).render("listing/erorr", { message, statusCode });
+});
+
+// Start server
+app.listen(8080, () => {
+    console.log("Server started on http://localhost:8080");
 });

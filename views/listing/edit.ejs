@@ -1,34 +1,96 @@
 <% layout("/layouts/boylerplate.ejs") %>
 
-<body>
-  <h3>Edit Listing</h3>
-  <form method="POST" action="/listings/<%= list._id %>?_method=PUT">
-    
-    <label>Title:</label><br />
-    <input name="listing[title]" value="<%= list.title %>" type="text" required />
-    <br /><br />
+<div class="container mt-5">
+  <h3 class="mb-4">Edit Listing</h3>
 
-    <label>Description:</label><br />
-    <textarea name="listing[description]" rows="4" required><%= list.description %></textarea>
-    <br /><br />
+  <form method="POST" action="/listings/<%= list._id %>?_method=PUT" class="needs-validation" novalidate>
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <input
+        type="text"
+        name="listing[title]"
+        class="form-control"
+        value="<%= list.title %>"
+        required
+      />
+      <div class="valid-feedback">Title looks good!</div>
+      <div class="invalid-feedback">Please enter a title.</div>
+    </div>
 
-    <label>Image URL:</label><br />
-    <input name="listing[image]" value="<%= list.image %>" type="text" required/>
-    
-    <br /><br />
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea
+        name="listing[description]"
+        class="form-control"
+        rows="4"
+        required
+      ><%= list.description %></textarea>
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Please enter a description.</div>
+    </div>
 
-    <label>Price (₹):</label><br />
-    <input name="listing[price]" value="<%= list.price %>" type="number" required />
-    <br /><br />
+    <div class="mb-3">
+      <label class="form-label">Image Link</label>
+      <input
+        type="text"
+        name="listing[image]"
+        class="form-control"
+        value="<%= list.image %>"
+      />
+    </div>
 
-    <label>Country:</label><br />
-    <input name="listing[country]" value="<%= list.country %>" type="text" required />
-    <br /><br />
+    <div class="mb-3">
+      <label class="form-label">Price</label>
+      <input
+        type="number"
+        name="listing[price]"
+        class="form-control"
+        value="<%= list.price %>"
+        required
+      />
+      <div class="invalid-feedback">Please enter a valid price.</div>
+    </div>
 
-    <label>Location:</label><br />
-    <input name="listing[location]" value="<%= list.location %>" type="text" required />
-    <br /><br />
+    <div class="mb-3">
+      <label class="form-label">Country</label>
+      <input
+        type="text"
+        name="listing[country]"
+        class="form-control"
+        value="<%= list.country %>"
+        required
+      />
+      <div class="invalid-feedback">Please enter a country.</div>
+    </div>
 
-    <button type="submit">Update Listing</button>
+    <div class="mb-3">
+      <label class="form-label">Location</label>
+      <input
+        type="text"
+        name="listing[location]"
+        class="form-control"
+        value="<%= list.location %>"
+        required
+      />
+      <div class="invalid-feedback">Please enter a location.</div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Listing</button>
   </form>
-</body>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const forms = document.querySelectorAll('.needs-validation');
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+})();
+</script>

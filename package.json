@@ -12,8 +12,17 @@
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^5.1.0",
+    "joi": "^17.13.3",
     "method-override": "^3.0.0",
     "mongoose": "^8.15.1"
   },
-  "description": ""
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TapanPatel09/hotel-booking.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TapanPatel09/hotel-booking/issues"
+  },
+  "homepage": "https://github.com/TapanPatel09/hotel-booking#readme"
 }
