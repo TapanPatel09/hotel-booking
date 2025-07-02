@@ -1,27 +1,41 @@
 <% layout("/layouts/boylerplate.ejs") %>
 
-<body class="bg-light">
-<div class="container py-5">
-    <h1 class="text-center mb-5 fw-bold">All Listings</h1>
+<style>
+.card-hover-effect {
+    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+}
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+.card-hover-effect:hover {
+    transform: scale(1.04);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65); /* Strong, deep shadow */
+    z-index: 3;
+}
+</style>
+
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="text-center mb-5 fw-bold">All Listings</h1>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <% for (let listing of alllisting) { %>
             <div class="col">
-            <div class="card h-100 shadow-sm border-0 rounded-4">
+            <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+                <div class="card card-hover-effect h-100 border-0 rounded-4">
                 <div class="ratio ratio-4x3">
-                <img src="<%= listing.image %>" alt="<%= listing.title %>"
-                        class="img-fluid rounded-top object-fit-cover" style="width: 100%; height: 100%;" />
+                    <img src="<%= listing.image %>" alt="<%= listing.title %>"
+                    class="img-fluid rounded-top object-fit-cover"
+                    style="width: 100%; height: 100%;" />
                 </div>
                 <div class="card-body">
-                <h5 class="card-title text-dark fw-semibold">
-                    <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-                    <%= listing.title %>
-                    </a>
-                </h5>
+                    <h5 class="card-title text-dark fw-semibold mb-2"><%= listing.title %></h5>
+                    <p class="card-text text-muted mb-1"><%= listing.location %></p>
+                    <p class="card-text text-muted"><%= listing.country %></p>
+                    <p class="card-text fw-bold text-primary">&#8377;<%= listing.price.toLocaleString("en-IN") %></p>
                 </div>
-            </div>
+                </div>
+            </a>
             </div>
         <% } %>
-        </div>
+    </div>
     </div>
 </body>
