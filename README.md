@@ -53,7 +53,7 @@ cd your-repo-name
 
 ### 2. Install dependencies
 ```bash
-npm install
+npm install mongoose ejs ejs-mate express path method-override joi
 ```
 
 ### 3. Run the application
