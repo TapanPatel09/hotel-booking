@@ -10,7 +10,7 @@ const wrapasync = require("./utill/wrapsync.js");
 const ExpressError = require("./utill/expresserror.js");
 const { ListSchema } = require("./schema.js");
 const { errorMonitor } = require("events");
-
+const Review= require("./models/review.js");
 
 const mongo_url = "mongodb://127.0.0.1:27017/wonderlust";
 
@@ -102,7 +102,23 @@ app.delete("/listings/:id", wrapasync(async (req, res) => {
     let { id } = req.params;
     await listing.findByIdAndDelete(id);
     res.redirect("/listings");
+
 }));
+// review
+    //post review 
+app.post("/listings/:id/reviews", async (req, res) => {
+    const list = await listing.findById(req.params.id);
+    const newReview = new Review(req.body.review);
+    
+    list.review.push(newReview); // Now this will work because 'review' field exists
+    await newReview.save();
+    await list.save();
+    
+    console.log("new review");
+    // console.log(newReview);
+    // res.send("new review save");
+    res.redirect(`/listings/${req.params.id}`);
+});
 
 // Catch-all 404 route
 app.use((req,res)=>{

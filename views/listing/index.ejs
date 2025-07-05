@@ -14,7 +14,7 @@
 
 <body class="bg-light">
     <div class="container py-5">
-        <h1 class="text-center mb-5 fw-bold">All Listings</h1>
+        <!-- <h1 class="text-center mb-5 fw-bold">All Listings</h1> -->
 
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <% for (let listing of alllisting) { %>
@@ -30,7 +30,7 @@
                     <h5 class="card-title text-dark fw-semibold mb-2"><%= listing.title %></h5>
                     <p class="card-text text-muted mb-1"><%= listing.location %></p>
                     <p class="card-text text-muted"><%= listing.country %></p>
-                    <p class="card-text fw-bold text-primary">&#8377;<%= listing.price.toLocaleString("en-IN") %></p>
+                    <p class="card-text fw-bold" style="color: #6c757d;">&#8377;<%= listing.price.toLocaleString("en-IN") %></p>
                 </div>
                 </div>
             </a>
