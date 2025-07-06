@@ -8,7 +8,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapasync = require("./utill/wrapsync.js");
 const ExpressError = require("./utill/expresserror.js");
-const { ListSchema } = require("./schema.js");
+const { ListSchema , reviewSchema } = require("./schema.js");
 const { errorMonitor } = require("events");
 const Review= require("./models/review.js");
 
@@ -43,6 +43,20 @@ const validatelisting  =(req,res,next)=>{
         next();
     }
 };
+const validateReview  =(req,res,next)=>{
+    
+    const { error } = reviewSchema.validate(req.body); 
+    if (error) {
+        let errmsg = error.details.map((el)=> el.message).join(",");
+        console.log("Validation Error:", error.details[0].message);
+        throw new  ExpressError(400,errmsg);
+    }
+    else{
+        next();
+    }
+};
+
+
 
 // Routes
 
@@ -64,7 +78,7 @@ app.get("/listings", wrapasync(async (req, res) => {
 // Show Route
 app.get("/listings/:id", async(req,res)=>{
     let {id} = req.params;
-    let list = await listing.findById(id);
+    let list = await listing.findById(id).populate("review");
     res.render("listing/show.ejs", {list} );
 });
 
@@ -106,19 +120,19 @@ app.delete("/listings/:id", wrapasync(async (req, res) => {
 }));
 // review
     //post review 
-app.post("/listings/:id/reviews", async (req, res) => {
+app.post("/listings/:id/reviews",validateReview, wrapasync(async(req, res) => {
     const list = await listing.findById(req.params.id);
     const newReview = new Review(req.body.review);
     
     list.review.push(newReview); // Now this will work because 'review' field exists
     await newReview.save();
-    await list.save();
+    await list.save(); 
     
     console.log("new review");
     // console.log(newReview);
     // res.send("new review save");
     res.redirect(`/listings/${req.params.id}`);
-});
+}));
 
 // Catch-all 404 route
 app.use((req,res)=>{

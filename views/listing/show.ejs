@@ -41,11 +41,12 @@
         </form>
       </div>
 
-  <!-- Review Section -->
+      <!-- Review Section -->
       <hr class="my-4" />
       <div class="mt-4">
         <h4>Leave a Review</h4>
-        <form action="/listings/<%= list._id %>/reviews" method="POST">
+        <form action="/listings/<%= list._id %>/reviews" method="POST" novalidate class="needs-validation">
+          
           <!-- Rating -->
           <div class="mb-3">
             <label for="rating" class="form-label">Rating</label>
@@ -56,7 +57,13 @@
               id="rating" 
               name="review[rating]" 
               class="form-range"
+              required
+              oninput="document.getElementById('ratingValue').textContent = this.value"
             >
+            <small>Rating: <span id="ratingValue">3</span>/5</small>
+            <div class="invalid-feedback">
+              Please select a rating.
+            </div>
           </div>
 
           <!-- Comment -->
@@ -69,7 +76,11 @@
               cols="30" 
               rows="5" 
               placeholder="Write your thoughts here..."
+              required
             ></textarea>
+            <div class="invalid-feedback">
+              Please write a comment before submitting.
+            </div>
           </div>
 
           <!-- Submit Button -->
@@ -77,8 +88,34 @@
         </form>
       </div>
 
+      <!-- Show Reviews -->
+      <h4>All reviews</h4>
+      <ul>
+        <% for(rev of list.review){ %>
+          <li><%= rev.comment %> </li>
+            rating = <%= rev.rating %>/5
+        <% } %>
+      </ul>
+
     </div>
   </div>
 </div>
 
 <br><br>
+
+<!-- Client-side Validation Script -->
+<script>
+(() => {
+  'use strict';
+  const forms = document.querySelectorAll('.needs-validation');
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+})();
+</script>
