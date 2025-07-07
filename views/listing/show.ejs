@@ -84,18 +84,52 @@
           </div>
 
           <!-- Submit Button -->
-          <button type="submit" class="btn btn-primary">Submit Review</button>
+          <button type="submit" class="btn btn-outline-dark">Submit Review</button>
         </form>
       </div>
 
-      <!-- Show Reviews -->
-      <h4>All reviews</h4>
-      <ul>
-        <% for(rev of list.review){ %>
-          <li><%= rev.comment %> </li>
-            rating = <%= rev.rating %>/5
+      <!-- show comment -->
+      <h4 class="mt-4">All Reviews</h4>
+      <div class="row">
+        <% for (let i = 0; i < list.review.length; i++) { 
+            const review = list.review[i];
+            const reviewer = review.username || "username";
+        %>
+          <div class="col-md-6 mb-4">
+            <div class="border rounded p-3 shadow-sm h-100">
+              
+              <!-- Username -->
+              <h6 class="fw-bold mb-1"><%= reviewer %></h6>
+
+              <!-- Rating Stars -->
+              <div class="mb-2 text-warning" style="font-size: 1.2rem;">
+                <% for (let j = 0; j < review.rating; j++) { %>★ <% } %>
+                <% for (let j = review.rating; j < 5; j++) { %>☆ <% } %>
+              </div>
+
+              <!-- Comment Snippet -->
+              <p class="mb-0">
+                <%= review.comment.length > 200 
+                      ? review.comment.slice(0, 200) + "..." 
+                      : review.comment 
+                %>
+              </p>
+
+              <!-- Show More -->
+              <% if (review.comment.length > 200) { %>
+                <a href="#" class="text-primary text-decoration-underline">Show more</a>
+              <% } %>
+              <form action="/listings/<%= list._id %>/reviews/<%= review._id %>?_method=DELETE"
+                    method="POST" class="mt-4">
+                    <button type="submit" class="btn btn-outline-dark">DELETE</button>
+              </form>
+
+
+            </div>
+          </div>
         <% } %>
-      </ul>
+      </div>
+
 
     </div>
   </div>
