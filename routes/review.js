@@ -1,9 +1,10 @@
 const express =require("express");
-const router = express.Router();
+const router = express.Router({mergeParams:true});
 const wrapasync = require("../utill/wrapsync.js");
 const ExpressError = require("../utill/expresserror.js");
 const { ListSchema , reviewSchema } = require("../schema.js");
 const Review= require("../models/review.js");
+const listing = require("../models/listing.js");
 
 const validateReview  =(req,res,next)=>{
     
@@ -21,6 +22,7 @@ const validateReview  =(req,res,next)=>{
 // review
     //post review 
 router.post("/",validateReview, wrapasync(async(req, res) => {
+    // console.log(req.params.id); 
     const list = await listing.findById(req.params.id);
     const newReview = new Review(req.body.review);
     
