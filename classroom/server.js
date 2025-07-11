@@ -1,49 +1,37 @@
 const express = require("express");
 const app = express();
+const user = require("./route/users");
+const post = require("./route/post");
+const session = require("express-session");
 
+// app.use(session( {secret :"mysecretstring" , resave:false , saveUninitialized:true   } ));
+const sessionOption = {
+  secret :"mysecretstring" ,
+  resave:false ,
+  saveUninitialized:true, 
+};
 
-//users
-// Index – Get all users
-app.get("/users", (req, res) => {
-  res.send("GET for users");
-});
+app.use(session(sessionOption));
 
-// Show – Get a specific user
-app.get("/users/:id", (req, res) => {
-  res.send("GET for user id");
-});
+app.get("/register",(req,res)=>{
+  let {name = "tapan"} =req.query;
+  req.session.name =name;
+  res.send(name); 
+})
 
-// Create – Add a new user
-app.post("/users", (req, res) => {
-  res.send("POST for users");
-});
+app.get("/hello",(req,res)=>{
+  res.send(`hello,${req.session.name}`);
+})
 
-// Delete – Remove a user
-app.delete("/users/:id", (req, res) => {
-  res.send("DELETE for user id");
-});
-
-// post
-// Index – Get all users
-app.get("/post", (req, res) => {
-  res.send("GET for post");
-});
-
-// Show – Get a specific user
-app.get("/post/:id", (req, res) => {
-  res.send("GET for user id");
-});
-
-// Create – Add a new user
-app.post("/post", (req, res) => {
-  res.send("POST for post");
-});
-
-// Delete – Remove a user
-app.delete("/post/:id", (req, res) => {
-  res.send("DELETE for user id");
-});
-
+// app.get("/test",(req,res)=>{
+//   if(req.session.count){
+//     req.session.count++;
+//   }
+//   else{
+//     req.session.count=1;
+//   }
+//   res.send(`session count ${req.session.count}`);
+// });
 
 
 app.listen(3030,()=>{
