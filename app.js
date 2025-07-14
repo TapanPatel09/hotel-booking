@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-
 const mongoose = require("mongoose");
 const listing = require("./models/listing.js");
 const path = require("path");
@@ -13,8 +12,21 @@ const ExpressError = require("./utill/expresserror.js");
 const Review= require("./models/review.js");
 const listingRoutes = require("./routes/listing.js");
 const reviewsRoute = require("./routes/review.js");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 const mongo_url = "mongodb://127.0.0.1:27017/wonderlust";
+
+const sessionOptios ={
+    secret:"mysuper",
+    resave: false,
+    saeUninitialized: true,
+    cookie:{
+        expiers:Date.now() + 7 *24 * 24 * 60 * 60 *1000,
+        maxAge:7 *24 * 24 * 60 * 60 *1000,
+        httpOnly:true
+    }
+}
 
 
 // Connect to MongoDB
@@ -35,16 +47,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+app.get("/", (req, res) => {
+    // res.redirect("/listings");
+    res.send("hi iam ");
+});
 
 
+app.use(session(sessionOptios));
+app.use(flash());
+
+app.use((req,res,next)=>{
+    res.locals.success  = req.flash("success");
+    res.locals.error  = req.flash("error");
+    next();
+});
 // listing.js
 app.use("/listings",listingRoutes);
 //review.js
 app.use("/listings/:id/reviews", reviewsRoute); 
 // Routes
-app.get("/", (req, res) => {
-    res.send("Hi, it's the start");
-});
 
 
 
