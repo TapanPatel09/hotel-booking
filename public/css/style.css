@@ -1,48 +1,49 @@
-/* body{
-    background-color: rgb(237, 171, 182);
-} */
+/* Ensure the footer sticks to the bottom */
 
-/* nav bar */
-.navbar{
-    background-color: white;
-}
-.fa-compass{
-    color: #fe424d;
-    font-size: 2rem;
-}
-.nav-link{
-    color: #222222 !important;
-}
-/* footer */
-.f-info-links a{
-    text-decoration: none;
-    color: #222222;
-}
-.f-info-links a:hover{
-    text-decoration: underline;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-.f-info-links,
-.f-info-social ,
-f-info-brand {
-    width: 100%;
+body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    flex: 1;
+}
+
+/* Footer styling */
+footer {
+    background-color: #e9e9ec;
+    text-align: center;
+    padding: 1rem;
+}
+
+.f-info {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    gap: 0.5rem;
 }
-.f-info-social i{
-    margin-right: 1rem;
+
+.f-info-social i {
     font-size: 1.5rem;
-
+    margin: 0 0.5rem;
+    color: #000;
+    cursor: pointer;
 }
 
-.f-info{
-    text-align: center ;
-    background-color: #ebebed;
-    height: 8rem;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    /* align-items: space-evenly; */
-    align-content: space-evenly;
+.f-info-links a {
+    margin: 0 0.5rem;
+    text-decoration: none;
+    color: #000;
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
 }

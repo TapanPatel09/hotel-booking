@@ -10,10 +10,16 @@ const ExpressError = require("./utill/expresserror.js");
 // const { ListSchema , reviewSchema } = require("./schema.js");
 // const { errorMonitor } = require("events");
 const Review= require("./models/review.js");
+
 const listingRoutes = require("./routes/listing.js");
 const reviewsRoute = require("./routes/review.js");
+const userRoute = require("./routes/user.js");
+
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User  = require("./models/user.js");
 
 const mongo_url = "mongodb://127.0.0.1:27017/wonderlust";
 
@@ -56,23 +62,50 @@ app.get("/", (req, res) => {
 app.use(session(sessionOptios));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req,res,next)=>{
     res.locals.success  = req.flash("success");
     res.locals.error  = req.flash("error");
     next();
 });
+
+// app.get("/demo",async(req,res)=>{
+//     let fakeuser= new User({
+//         email:"1123@gmail.com",
+//         username:"ddd"
+//     })
+
+//     let regiterUser = await User.register(fakeuser,"hello");
+//     res.send(regiterUser);
+// });
+
+
 // listing.js
 app.use("/listings",listingRoutes);
 //review.js
 app.use("/listings/:id/reviews", reviewsRoute); 
+app.use("/",userRoute);
 // Routes
 
 
 
 // Catch-all 404 route
 app.use((req,res)=>{
-    let qur = req.query;
-    res.render("listing/erorr.ejs",{qur});
+    // let qur = req.query;
+    // res.render("listing/erorr.ejs",{qur});
+    app.use((req, res) => {
+    res.status(404).render("listing/erorr.ejs", {
+            message: "Page Not Found",
+            statusCode: 404
+        });
+    });
+
 })
 // app.all("*", (req, res, next) => {
 //     next(new ExpressError(404, "Page Not Found"));
