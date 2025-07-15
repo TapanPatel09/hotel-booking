@@ -4,6 +4,7 @@ const wrapasync = require("../utill/wrapsync.js");
 const ExpressError = require("../utill/expresserror.js");
 const { ListSchema , reviewSchema } = require("../schema.js");
 const listing = require("../models/listing.js");
+const {isLoggedin} = require("../middelwere.js");
 
 const validatelisting  =(req,res,next)=>{
     
@@ -19,7 +20,8 @@ const validatelisting  =(req,res,next)=>{
 };
 
 // New Listing Route - IMPORTANT: Must be before :id
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedin,(req, res) => {
+    console.log(req.user);
     res.render("listing/new.ejs");
 });
 
@@ -53,7 +55,7 @@ router.post("/",validatelisting, wrapasync(async (req, res) => {
 
 
 // Edit Route
-router.get("/:id/edit", wrapasync(async (req, res) => {
+router.get("/:id/edit", isLoggedin,wrapasync(async (req, res) => {
     let { id } = req.params;
     const list = await listing.findById(id);
     if (!list) {
@@ -63,14 +65,14 @@ router.get("/:id/edit", wrapasync(async (req, res) => {
 }));
 
 // Update Route
-router.put("/:id", validatelisting,wrapasync(async (req, res) => {
+router.put("/:id",isLoggedin, validatelisting,wrapasync(async (req, res) => {
     let { id } = req.params;
     const list = await listing.findByIdAndUpdate(id, { ...req.body.listing });
     res.redirect(`/listings/${id}`);
 }));
 
 // Delete Route
-router.delete("/:id", wrapasync(async (req, res) => {
+router.delete("/:id",isLoggedin, wrapasync(async (req, res) => {
     let { id } = req.params;
     await listing.findByIdAndDelete(id);
      req.flash("success", " Listing Deleted!");
