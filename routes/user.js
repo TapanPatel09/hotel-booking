@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user.js");
 const wrapAsync = require("../utill/wrapsync.js");
 const passport = require("passport");
+const { isLoggedin } = require("../middelwere.js");
 const {saveRedirectUrl} = require("../middelwere.js");
 
 router.get("/signup",(req,res)=>{
@@ -49,6 +50,7 @@ router.post("/signup", async (req, res) => {
     });
 
     console.log(registeredUser);
+    
     } catch (err) {
         console.error(err);
 
@@ -72,18 +74,33 @@ router.get("/login",(req,res)=>{
     res.render("users/login.ejs");
 });
 
+// router.post("/login",
+//     saveRedirectUrl,
+//     passport.authenticate("local" ,
+//       {failureRedirect:'/login',failureFlash :true }),
+//     async(req,res)=>{
+//       const { username, email, password } = req.body;
+//       // const newUser = new User({ email, username });
+//       req.flash("success" ,`${username} welcome back to wonderlust`);
+//       // res.redirect(redirectUrl);
+//       res.redirect(req.session.redirectUrl || "/listings");
+//       // delete req.session.redirectUrl;
+
+// });
 router.post("/login",
     saveRedirectUrl,
-    passport.authenticate("local" ,
-      {failureFlash :true , failureRedirect:'/login'}),
-    async(req,res)=>{
-      const { username, email, password } = req.body;
-      // const newUser = new User({ email, username });
-      req.flash("success" ,`${username} welcome back to wonderlust`);
-      // res.redirect(redirectUrl);
-      res.redirect(req.session.redirectUrl || "/listings");
+    passport.authenticate("local", {
+        failureRedirect: "/login",
+        failureFlash: true,
+    }),
+    async (req, res) => {
+        const redirectUrl = req.session.redirectUrl || "/listings";
+        delete req.session.redirectUrl; // ✅ Clear it after using
+        req.flash("success", `${req.user.username} welcome back to Wanderlust`);
+        res.redirect(redirectUrl); // ✅ Redirect to originally intended page
+    }
+);
 
-});
 
 router.get("/logout",(req,res,next)=>{
   req.logOut((err)=>{
@@ -91,7 +108,7 @@ router.get("/logout",(req,res,next)=>{
         return next(err);
     }
     req.flash("success","you are logged out!")
-    res.redirect("/listings");
+    return res.redirect("/listings");
   });
 
 });

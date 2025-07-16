@@ -34,12 +34,16 @@ router.get("/", wrapasync(async (req, res) => {
 // Show Route
 router.get("/:id", async(req,res)=>{
     let {id} = req.params;
-    let list = await listing.findById(id).populate("review");
+    let list = await listing.findById(id).populate("review").populate("owner");
+    // let list = await listing.findById(id).populate("review").populate("owner");
+
+
     if(!list){
         req.flash("error", "listing is does not exits");
         // res.redirect("/listing");
         return res.redirect("/listings");
     }
+    console.log(list);
     res.render("listing/show.ejs", {list} );
 });
 
@@ -48,6 +52,7 @@ router.get("/:id", async(req,res)=>{
 router.post("/",validatelisting, wrapasync(async (req, res) => {
     console.log("REQ.BODY >>>", req.body);
     const newListing = new listing(req.body.listing);
+    newListing.owner = req.user._id;
     await newListing.save();
     req.flash("success", "New Listing Created!");
     res.redirect("/listings");
