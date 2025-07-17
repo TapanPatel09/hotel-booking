@@ -22,7 +22,7 @@
     const User  = require("./models/user.js");
 
     const mongo_url = "mongodb://127.0.0.1:27017/wonderlust";
-
+    
     const sessionOptios ={
         secret:"mysuper",
         resave: false,

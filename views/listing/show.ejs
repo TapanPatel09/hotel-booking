@@ -36,13 +36,15 @@
       <p class="card-text text-muted"><%= list.country %></p>
 
       <!-- Action Buttons -->
-      <div class="mt-4">
-        <a href="/listings/<%= list._id %>/edit" class="btn btn-danger me-2">Edit</a>
-        <form action="/listings/<%= list._id %>?_method=DELETE" method="POST" class="d-inline">
-          <button type="submit" class="btn btn-dark">Delete</button>
-        </form>
-      </div>
-
+      <% if(currUser && list.owner._id.equals(currUser._id)) {} %>
+        <div class="mt-4">
+          <a href="/listings/<%= list._id %>/edit" class="btn btn-danger me-2">Edit</a>
+          <form action="/listings/<%= list._id %>?_method=DELETE" method="POST" class="d-inline">
+            <button type="submit" class="btn btn-dark">Delete</button>
+          </form>
+        </div>
+      <% } %>
+    <% if(currUser) { %>
       <!-- Review Section -->
       <hr class="my-4" />
       <div class="mt-4">
@@ -88,6 +90,7 @@
           <!-- Submit Button -->
           <button type="submit" class="btn btn-outline-dark">Submit Review</button>
         </form>
+      <% } %>
       </div>
 
       <!-- show comment -->

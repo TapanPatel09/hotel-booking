@@ -74,32 +74,27 @@ router.get("/login",(req,res)=>{
     res.render("users/login.ejs");
 });
 
-// router.post("/login",
-//     saveRedirectUrl,
-//     passport.authenticate("local" ,
-//       {failureRedirect:'/login',failureFlash :true }),
-//     async(req,res)=>{
-//       const { username, email, password } = req.body;
-//       // const newUser = new User({ email, username });
-//       req.flash("success" ,`${username} welcome back to wonderlust`);
-//       // res.redirect(redirectUrl);
-//       res.redirect(req.session.redirectUrl || "/listings");
-//       // delete req.session.redirectUrl;
-
-// });
 router.post("/login",
     saveRedirectUrl,
     passport.authenticate("local", {
         failureRedirect: "/login",
         failureFlash: true,
     }),
-    async (req, res) => {
-        const redirectUrl = req.session.redirectUrl || "/listings";
-        delete req.session.redirectUrl; // ✅ Clear it after using
-        req.flash("success", `${req.user.username} welcome back to Wanderlust`);
-        res.redirect(redirectUrl); // ✅ Redirect to originally intended page
-    }
-);
+    (req,res)=>{
+      const { username, email, password } = req.body;
+      // const newUser = new User({ email, username });
+      req.flash("success" ,`${username} welcome back to wonderlust`);
+      // res.redirect(redirectUrl);
+      // res.redirect(req.session.redirectUrl || "/listings");
+      // const redirectUrl = res.session.redirectUrl || "/listings";
+      const redirectUrl = req.session.redirectUrl || "/listings";
+
+    delete req.session.redirectUrl; // clean up
+
+    res.redirect(redirectUrl);
+      // delete req.session.redirectUrl;
+});
+
 
 
 router.get("/logout",(req,res,next)=>{

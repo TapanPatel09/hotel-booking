@@ -5,19 +5,8 @@ const ExpressError = require("../utill/expresserror.js");
 const { ListSchema , reviewSchema } = require("../schema.js");
 const Review= require("../models/review.js");
 const listing = require("../models/listing.js");
+const {validateReview} = require("../middelwere.js");
 
-const validateReview  =(req,res,next)=>{
-    
-    const { error } = reviewSchema.validate(req.body); 
-    if (error) {
-        let errmsg = error.details.map((el)=> el.message).join(",");
-        console.log("Validation Error:", error.details[0].message);
-        throw new  ExpressError(400,errmsg);
-    }
-    else{
-        next();
-    }
-};
 
 // review
     //post review 
