@@ -6,7 +6,9 @@
 //     }
 //     next();
 // };
-const listing = require("./models/listing")
+const listing = require("./models/listing.js");
+const review = require("./models/review.js");
+
 const ExpressError = require("./utill/expresserror.js");
 const { ListSchema , reviewSchema } = require("./schema.js");
 // const { ListSchema , reviewSchema } = require("../schema.js");
@@ -77,3 +79,21 @@ module.exports.validateReview  =(req,res,next)=>{
         next();
     }
 };
+
+module.exports.isReviewOwner = async (req, res, next) => {
+    const { id, reviewId } = req.params;
+    const foundReview = await review.findById(reviewId); // ✅ no conflict
+
+    if (!foundReview) {
+        req.flash("error", "Review not found");
+        return res.redirect("/listings");
+    }
+
+    if (!foundReview.author.equals(res.locals.currUser._id)) {
+        req.flash("error", "You don't have permission to delete this review");
+        return res.redirect(`/listings/${id}`);
+    }
+
+    next();
+};
+
