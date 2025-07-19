@@ -22,7 +22,7 @@
     <div class="card-body">
       
       <!-- Description -->
-      <b>Created by -></b><i> <%=list.owner.username %> </i>
+      <b>Created by →</b> <i><%= list.owner.username %></i>
       <br>
       <p class="card-text mb-3"><%= list.description %></p>
 
@@ -44,28 +44,23 @@
           </form>
         </div>
       <% } %>
-    <% if(currUser) { %>
+
+      <% if(currUser) { %>
       <!-- Review Section -->
       <hr class="my-4" />
       <div class="mt-4">
-        <h4>Leave a Review</h4>
         <form action="/listings/<%= list._id %>/reviews" method="POST" novalidate class="needs-validation">
           
           <!-- Rating -->
           <div class="mb-3">
-            <label for="rating" class="form-label">Rating</label>
-            <input 
-              type="range" 
-              min="1" 
-              max="5" 
-              id="rating" 
-              name="review[rating]" 
-              class="form-range"
-              required
-              oninput="document.getElementById('ratingValue').textContent = this.value"
-            >
-            <small>Rating: <span id="ratingValue">3</span>/5</small>
-            <div class="invalid-feedback">
+            <label class="form-label d-block">Rating</label>
+            <div class="star-rating mb-1">
+              <% for (let i = 5; i >= 1; i--) { %>
+                <input type="radio" id="star<%= i %>" name="review[rating]" value="<%= i %>" required>
+                <label for="star<%= i %>" title="<%= i %> stars">★</label>
+              <% } %>
+            </div>
+            <div class="invalid-feedback d-block">
               Please select a rating.
             </div>
           </div>
@@ -90,53 +85,52 @@
           <!-- Submit Button -->
           <button type="submit" class="btn btn-outline-dark">Submit Review</button>
         </form>
-      <% } %>
       </div>
+      <% } %>
 
-        <!-- show comment -->
-        <h4 class="mt-4">All Reviews</h4>
-        <div class="row">
-          <% for (let i = 0; i < list.review.length; i++) { 
-                const review = list.review[i];
-                const reviewer = review.author?.username || "Anonymous";
-          %>
-            <div class="col-md-6 mb-4">
-              <div class="border rounded p-3 shadow-sm h-100">
-              
-                <!-- Username -->
-                <h6 class="fw-bold mb-1">@<%= reviewer %></h6>
-              
-                <!-- Rating Stars -->
-                <div class="mb-2 text-warning" style="font-size: 1.2rem;">
-                  <% for (let j = 0; j < review.rating; j++) { %>★ <% } %>
-                  <% for (let j = review.rating; j < 5; j++) { %>☆ <% } %>
-                </div>
-              
-                <!-- Comment Snippet -->
-                <p class="mb-0">
-                  <%= review.comment.length > 200 
-                        ? review.comment.slice(0, 200) + "..." 
-                        : review.comment 
-                  %>
-                </p>
-              
-                <!-- Show More -->
-                <% if (review.comment.length > 200) { %>
-                  <a href="#" class="text-primary text-decoration-underline">Show more</a>
-                <% } %>
-                <% if (currUser && review.author && review.author._id.equals(currUser._id)) { %>
-                    <form action="/listings/<%= list._id %>/reviews/<%= review._id %>?_method=DELETE"
-                          method="POST" class="mt-4">
-                      <button type="submit" class="btn btn-outline-danger">Delete Your Review</button>
-                    </form>
-                <% } %>
-              
+      <!-- Show Comments -->
+      <h4 class="mt-4">All Reviews</h4>
+      <div class="row">
+        <% for (let i = 0; i < list.review.length; i++) { 
+              const review = list.review[i];
+              const reviewer = review.author?.username || "Anonymous";
+        %>
+          <div class="col-md-6 mb-4">
+            <div class="border rounded p-3 shadow-sm h-100">
+            
+              <!-- Username -->
+              <h6 class="fw-bold mb-1">@<%= reviewer %></h6>
+            
+              <!-- Rating Stars -->
+              <div class="mb-2 text-warning" style="font-size: 1.2rem;">
+                <% for (let j = 0; j < review.rating; j++) { %>★ <% } %>
+                <% for (let j = review.rating; j < 5; j++) { %>☆ <% } %>
               </div>
+            
+              <!-- Comment Snippet -->
+              <p class="mb-0">
+                <%= review.comment.length > 200 
+                      ? review.comment.slice(0, 200) + "..." 
+                      : review.comment 
+                %>
+              </p>
+            
+              <!-- Show More -->
+              <% if (review.comment.length > 200) { %>
+                <a href="#" class="text-primary text-decoration-underline">Show more</a>
+              <% } %>
+              
+              <% if (currUser && review.author && review.author._id.equals(currUser._id)) { %>
+                <form action="/listings/<%= list._id %>/reviews/<%= review._id %>?_method=DELETE"
+                      method="POST" class="mt-4">
+                  <button type="submit" class="btn btn-outline-danger">Delete Your Review</button>
+                </form>
+              <% } %>
+            
             </div>
-          <% } %>
-        </div>
-
-
+          </div>
+        <% } %>
+      </div>
 
     </div>
   </div>
@@ -144,19 +138,49 @@
 
 <br><br>
 
-<!-- Client-side Validation Script -->
+<!-- Styles for Star Rating -->
+<style>
+  .star-rating {
+    direction: rtl;
+    display: inline-flex;
+    font-size: 2rem;
+    user-select: none;
+  }
+
+  .star-rating input[type="radio"] {
+    display: none;
+  }
+
+  .star-rating label {
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .star-rating input[type="radio"]:checked ~ label,
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: #ffc107;
+  }
+
+  .was-validated .star-rating input[type="radio"]:invalid ~ label {
+    color: #dc3545;
+  }
+</style>
+
+<!-- Bootstrap Validation Script -->
 <script>
-(() => {
-  'use strict';
-  const forms = document.querySelectorAll('.needs-validation');
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      form.classList.add('was-validated');
-    }, false);
-  });
-})();
+  (() => {
+    'use strict';
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  })();
 </script>

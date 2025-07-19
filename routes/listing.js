@@ -5,6 +5,8 @@ const ExpressError = require("../utill/expresserror.js");
 const { ListSchema , reviewSchema } = require("../schema.js");
 const listing = require("../models/listing.js");
 const {isLoggedin,isOwner,validatelisting} = require("../middelwere.js");
+const multer = require("multer");
+const upload = multer({dest:"uploads/"});
 
 //controller
 const ListingController = require("../controller/listing.js");
@@ -13,7 +15,8 @@ const ListingController = require("../controller/listing.js");
 router
     .route("/")
     .get(wrapasync(ListingController.index))                            // Show all listings
-    .post(isLoggedin, validatelisting, wrapasync(ListingController.createListing))
+    // .post(isLoggedin, validatelisting, wrapasync(ListingController.createListing))
+    .post( upload.single('listing[image]') ,(req,res)=>{ res.send(req.file);})
 
 router.get("/new", isLoggedin,ListingController.renderNewForm); 
 

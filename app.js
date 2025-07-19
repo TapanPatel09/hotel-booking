@@ -89,27 +89,22 @@
 
 
     // Catch-all 404 route
-    app.use((req,res)=>{
-        // let qur = req.query;
-        // res.render("listing/erorr.ejs",{qur});
-        app.use((req, res) => {
-        res.status(404).render("listing/erorr.ejs", {
-                message: "Page Not Found",
-                statusCode: 404
-            });
-        });
-
-    })
-    // app.all("*", (req, res, next) => {
-    //     next(new ExpressError(404, "Page Not Found"));
-    // });
+app.use((req, res) => {
+    res.status(404).render("listing/erorr.ejs", {
+        message: "Page Not Found",
+        statusCode: 404
+    });
+});
 
     // Error-handling middleware
     app.use((err, req, res, next) => {
         const { statusCode = 500, message = "Something went wrong" } = err;
         res.status(statusCode).render("listing/erorr", { message, statusCode });
     });
-
+    
+    // app.all("*", (req, res, next) => {
+    //     next(new ExpressError(404, "Page Not Found"));
+    // });
     // Start server
     app.listen(8080, () => {
         console.log("Server started on http://localhost:8080");
