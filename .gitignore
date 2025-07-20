@@ -18,3 +18,4 @@ Thumbs.db
 
 # Uploaded files (if applicable)
 public/uploads/
+.env
