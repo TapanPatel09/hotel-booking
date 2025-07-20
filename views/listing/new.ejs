@@ -5,10 +5,11 @@
 
   <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data" >
     <div class="mb-3">
+<!-- title -->
       <label class="form-label">Title</label>
       <input
         type="text"
-        class="form-control"
+        class="form-control"  
         name="listing[title]"
         placeholder="Add a catchy title"
         required
@@ -16,7 +17,7 @@
       <div class="valid-feedback">Title looks good!</div>
       <div class="invalid-feedback">Please enter a title.</div>
     </div>
-
+<!-- description -->
     <div class="mb-3">
       <label class="form-label">Description</label>
       <textarea
@@ -28,7 +29,7 @@
       <div class="valid-feedback">Looks good!</div>
       <div class="invalid-feedback">Please enter a description.</div>
     </div>
-
+<!-- image -->
     <div class="mb-3">
       <label class="form-label">Upload Image </label>
       <input
@@ -41,7 +42,7 @@
       <div class="valid-feedback">Image URL looks good!</div>
       <div class="invalid-feedback">Please enter a valid URL.</div>
     </div>
-
+<!-- price -->
     <div class="mb-3">
       <label class="form-label">Price</label>
       <input
@@ -54,7 +55,7 @@
       <div class="valid-feedback">Looks good!</div>
       <div class="invalid-feedback">Please enter a valid price.</div>
     </div>
-
+<!-- countery -->
     <div class="mb-3">
       <label class="form-label">Country</label>
       <input
@@ -67,7 +68,7 @@
       <div class="valid-feedback">Looks good!</div>
       <div class="invalid-feedback">Please enter a country.</div>
     </div>
-
+<!-- location -->
     <div class="mb-3">
       <label class="form-label">Location</label>
       <input

@@ -5,8 +5,11 @@ const ExpressError = require("../utill/expresserror.js");
 const { ListSchema , reviewSchema } = require("../schema.js");
 const listing = require("../models/listing.js");
 const {isLoggedin,isOwner,validatelisting} = require("../middelwere.js");
+
 const multer = require("multer");
-const upload = multer({dest:"uploads/"});
+const {storage} = require("../cloudeConfig.js");
+const upload = multer({storage});
+
 
 //controller
 const ListingController = require("../controller/listing.js");
@@ -15,8 +18,8 @@ const ListingController = require("../controller/listing.js");
 router
     .route("/")
     .get(wrapasync(ListingController.index))                            // Show all listings
-    // .post(isLoggedin, validatelisting, wrapasync(ListingController.createListing))
-    .post( upload.single('listing[image]') ,(req,res)=>{ res.send(req.file);})
+    .post(isLoggedin , upload.single("listing[image]") ,validatelisting, wrapasync(ListingController.createListing))
+
 
 router.get("/new", isLoggedin,ListingController.renderNewForm); 
 

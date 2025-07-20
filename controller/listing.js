@@ -31,13 +31,19 @@ module.exports.showListing = async(req,res)=>{
 };
 
 module.exports.createListing = async (req, res) => {
-    console.log("REQ.BODY >>>", req.body);
+    let url = req.file.path;
+    let filename = req.file.filename;
+
     const newListing = new listing(req.body.listing);
     newListing.owner = req.user._id;
+    newListing.image = {url,filename};
     await newListing.save();
-    req.flash("success", "New Listing Created!");
+
+    req.flash("success","lisgin is successduly ");
     res.redirect("/listings");
 };
+
+
 
 module.exports.renderEditForm = async (req, res) => {
     let { id } = req.params;
