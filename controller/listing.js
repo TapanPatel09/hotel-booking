@@ -1,3 +1,4 @@
+const { ur } = require("@faker-js/faker");
 const listing = require("../models/listing.js");
 
 module.exports.index = async (req, res) => {
@@ -51,17 +52,23 @@ module.exports.renderEditForm = async (req, res) => {
     if (!list) {
         throw new ExpressError(404, "Listing not found for editing");
     }
-    res.render("listing/edit.ejs", { list });
+
+    let original = list.image.url;
+    original=original.replace("/upload","/upload/h_300,w_250");
+    res.render("listing/edit.ejs", { list ,original});
 };
 
 module.exports.updateListing = async (req, res) => {
     let { id } = req.params;
-    // let ll = await listing.findById(id);
-    // if( ! ll.owner._id.equals(res.locals.currUser._id)){
-    //     req.flash("error","you do't have parmitons too edit");
-    //     return  res.redirect(`/listings/${id}`);
-    // }
     const list = await listing.findByIdAndUpdate(id, { ...req.body.listing });
+
+    // if(typeof req.file == undefined){
+    if(req.file){
+        let url = req.file.path;
+        let filename = req.file.filename;
+        list.image = {url,filename};
+        await list.save();
+    } 
     res.redirect(`/listings/${id}`);
 };
 

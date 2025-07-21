@@ -26,7 +26,7 @@ router.get("/new", isLoggedin,ListingController.renderNewForm);
 router
     .route("/:id")
     .get(ListingController.showListing)
-    .put(isLoggedin, isOwner,validatelisting,wrapasync(ListingController.updateListing))
+    .put(isLoggedin, isOwner,upload.single("listing[image]") ,validatelisting,wrapasync(ListingController.updateListing)) 
     .delete(isLoggedin,isOwner, wrapasync(ListingController.deleteListing))
     // New Listing Route - IMPORTANT: Must be before :id
     

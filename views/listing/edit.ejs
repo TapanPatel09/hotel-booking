@@ -3,8 +3,9 @@
 <div class="container mt-5">
   <h3 class="mb-4">Edit Listing</h3>
 
-  <form method="POST" action="/listings/<%= list._id %>?_method=PUT" class="needs-validation" novalidate>
+  <form method="POST" action="/listings/<%= list._id %>?_method=PUT" class="needs-validation" novalidate enctype="multipart/form-data">
     <div class="mb-3">
+<!-- title -->
       <label class="form-label">Title</label>
       <input
         type="text"
@@ -16,7 +17,7 @@
       <div class="valid-feedback">Title looks good!</div>
       <div class="invalid-feedback">Please enter a title.</div>
     </div>
-
+<!-- description -->
     <div class="mb-3">
       <label class="form-label">Description</label>
       <textarea
@@ -28,17 +29,22 @@
       <div class="valid-feedback">Looks good!</div>
       <div class="invalid-feedback">Please enter a description.</div>
     </div>
-
+<!-- image -->
+    <div class="mb-3">
+      original listing image
+      <img src="<%=original%>" alt="">
+    </div>
+<!-- image - original -->
     <div class="mb-3">
       <label class="form-label">Image Link</label>
       <input
-        type="text"
+        type="file"
         name="listing[image]"
         class="form-control"
-        value="<%= list.image %>"
+      
       />
     </div>
-
+<!-- price -->
     <div class="mb-3">
       <label class="form-label">Price</label>
       <input
@@ -50,7 +56,7 @@
       />
       <div class="invalid-feedback">Please enter a valid price.</div>
     </div>
-
+<!-- country -->
     <div class="mb-3">
       <label class="form-label">Country</label>
       <input
@@ -62,7 +68,7 @@
       />
       <div class="invalid-feedback">Please enter a country.</div>
     </div>
-
+<!-- location -->
     <div class="mb-3">
       <label class="form-label">Location</label>
       <input
