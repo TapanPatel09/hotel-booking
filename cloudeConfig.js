@@ -11,7 +11,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary, // ✅ Correct object
   params: {
     folder: "first_dev",   
-    allowed_formats: ["jpg", "jpeg", "png"]
+    allowed_formats: ["jpg", "jpeg", "png","webp"]
   },
 });
 

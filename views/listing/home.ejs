@@ -1,98 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Homepage - StayHub</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <style>
-    body {
-      background-color: #f9fbfd;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    .navbar-brand img {
-      width: 30px;
-      margin-right: 8px;
-    }
-    .hero {
-      background: linear-gradient(to right, #e0f7fa, #ffffff);
-      padding: 80px 0;
-      text-align: center;
-    }
-    .hero h1 {
-      font-weight: bold;
-      font-size: 3rem;
-    }
-    .features .icon {
-      font-size: 2rem;
-      color: #dc3545;
-    }
-    .footer {
-      background-color: #fff;
-      padding: 20px 0;
-      text-align: center;
-      color: #6c757d;
-      border-top: 1px solid #dee2e6;
-    }
-  </style>
-</head>
-<body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="#">
-        <img src="https://cdn-icons-png.flaticon.com/512/25/25694.png" alt="logo" />
-        StayHub
-      </a>
-      <div class="collapse navbar-collapse justify-content-end">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">All Listing</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Add New Place</a></li>
-        </ul>
+<% layout("/layouts/boylerplate.ejs") %>
+
+<section class="py-5 text-center bg-light">
+  <div class="container">
+    <h1 class="display-4 fw-bold">Welcome to Wonderlust Hostels</h1>
+    <p class="lead">Discover and list the best hostels around your campus or city. Affordable stays, verified listings, and a community you can trust.</p>
+    <a href="/listings" class="btn btn-primary btn-lg mt-3">Explore Hostels</a>
+    <% if (!currUser) { %>
+      <a href="/signup" class="btn btn-outline-secondary btn-lg mt-3 ms-3">Join Now</a>
+    <% } %>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <h2 class="mb-4 text-center">Why Choose Wonderlust?</h2>
+    <div class="row text-center">
+      <div class="col-md-4">
+        <i class="fa-solid fa-bed fa-3x text-primary mb-3"></i>
+        <h4>Verified Listings</h4>
+        <p>Only trusted and verified hostel listings with reviews and photos.</p>
+      </div>
+      <div class="col-md-4">
+        <i class="fa-solid fa-wallet fa-3x text-success mb-3"></i>
+        <h4>Budget Friendly</h4>
+        <p>Find accommodations that suit your pocket — from shared rooms to private stays.</p>
+      </div>
+      <div class="col-md-4">
+        <i class="fa-solid fa-users fa-3x text-warning mb-3"></i>
+        <h4>Community Driven</h4>
+        <p>Help others by leaving reviews and tips about local hostels and areas.</p>
       </div>
     </div>
-  </nav>
+  </div>
+</section>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="container">
-      <h1 class="mb-4">Find Your Perfect Getaway</h1>
-      <p class="lead mb-4">Explore curated homes, cabins, and apartments in top destinations.</p>
-      <a href="#" class="btn btn-danger btn-lg">Browse Listings</a>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="features py-5">
-    <div class="container">
-      <div class="row text-center">
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="mb-4 text-center">Top Rated Hostels</h2>
+    <div class="row">
+      <% topHostels.forEach(hostel => { %>
         <div class="col-md-4 mb-4">
-          <div class="icon mb-3">🏖️</div>
-          <h5>Beachside Retreats</h5>
-          <p>Relax by the shore in beautiful seaside homes.</p>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="icon mb-3">🏔️</div>
-          <h5>Mountain Escapes</h5>
-          <p>Find peace in scenic cabins among the peaks.</p>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="icon mb-3">🏙️</div>
-          <h5>Urban Apartments</h5>
-          <p>Stay in the heart of your favorite cities.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+          <div class="card shadow-sm h-100">
+            <% if (hostel.image && hostel.image.url) { %>
+              <img src="<%= hostel.image.url %>" class="card-img-top hostel-img" alt="<%= hostel.name %>">
+            <% } else { %>
+              <div class="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center hostel-img" style="height: 200px;">
+                <span>No Image</span>
+              </div>
+            <% } %>
+            <div class="card-body">
+              <h5 class="card-title"><%= hostel.title %></h5>
+              <p class="card-text text-muted"><%= hostel.location || 'No location' %></p>
+              <p>
+                <i class="fa-solid fa-star text-warning"></i>
+                <% if (hostel.review.length > 0) { %>
+                  <%= hostel.review[0].rating %>/5
+                <% } else { %>
+                  No rating
+                <% } %>
+              </p>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; 2025 StayHub. All rights reserved.</p>
+              <a href="/listings/<%= hostel._id %>" class="btn btn-outline-primary btn-sm">View Details</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
     </div>
-  </footer>
-
-</body>
-</html>
+  </div>
+</section>

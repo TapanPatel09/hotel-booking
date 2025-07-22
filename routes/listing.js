@@ -15,11 +15,24 @@ const upload = multer({storage});
 const ListingController = require("../controller/listing.js");
 // const isOwner = require("../midde   lwere.js"); 
 
+router.get('/home', async (req, res) => {
+    const topHostels = await listing.find({})
+    .populate({
+        path: "review",
+        select: "rating"
+    })
+    .limit(6);
+ // Use your listing model
+
+    res.render('listing/home', { currUser: req.user, topHostels });
+});
+
+
 router
     .route("/")
+    // .get( (req, res) => {res.redirect('/listings/home')})
     .get(wrapasync(ListingController.index))                            // Show all listings
     .post(isLoggedin , upload.single("listing[image]") ,validatelisting, wrapasync(ListingController.createListing))
-
 
 router.get("/new", isLoggedin,ListingController.renderNewForm); 
 

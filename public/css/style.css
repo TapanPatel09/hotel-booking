@@ -47,3 +47,7 @@ footer {
 .f-info-links a:hover {
     text-decoration: underline;
 }
+.hostel-img {
+  height: 200px;
+  object-fit: cover;
+}

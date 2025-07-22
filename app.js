@@ -60,10 +60,8 @@ require('dotenv').config();
 
 
     app.get("/", (req, res) => {
-        // res.redirect("/listings");
-        res.send("hi iam ");
-    });
-
+    res.redirect("/listings/home");
+});
 
     app.use(session(sessionOptios));
     app.use(flash());
@@ -84,8 +82,11 @@ require('dotenv').config();
         next();
     });
 
-
     // listing.js
+    // app.get("/home",async(req,res)=>{
+    //     const topHostels = await Hostel.find({}).limit(6); // or custom logic
+    //     res.render('home', { currUser: req.user, topHostels });
+    // });
     app.use("/listings",listingRoutes);
     //review.js
     app.use("/listings/:id/reviews", reviewsRoute); 
