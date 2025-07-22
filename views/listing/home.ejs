@@ -1,10 +1,39 @@
-
 <% layout("/layouts/boylerplate.ejs") %>
+
+<style>
+  .typewriter-text {
+    border-right: 2px solid black;
+    white-space: nowrap;
+    overflow: hidden;
+    width: fit-content;
+    font-weight: bold;
+  }
+
+  .glow-card:hover {
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.6);
+    transform: scale(1.03);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .glow-icon {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glow-icon:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+</style>
 
 <section class="py-5 text-center bg-light">
   <div class="container">
-    <h1 class="display-4 fw-bold">Welcome to Wonderlust Hostels</h1>
-    <p class="lead">Discover and list the best hostels around your campus or city. Affordable stays, verified listings, and a community you can trust.</p>
+    <div class="d-flex justify-content-center">
+      <h1 class="display-4 fw-bold typewriter-text text-center" id="typewriter"></h1>
+    </div>
+
+    <p class="lead">
+      Discover and list the best hostels around your campus or city. Affordable stays, verified listings, and a community you can trust.
+    </p>
     <a href="/listings" class="btn btn-primary btn-lg mt-3">Explore Hostels</a>
     <% if (!currUser) { %>
       <a href="/signup" class="btn btn-outline-secondary btn-lg mt-3 ms-3">Join Now</a>
@@ -16,18 +45,18 @@
   <div class="container">
     <h2 class="mb-4 text-center">Why Choose Wonderlust?</h2>
     <div class="row text-center">
-      <div class="col-md-4">
-        <i class="fa-solid fa-bed fa-3x text-primary mb-3"></i>
+      <div class="col-md-4 glow-card p-4">
+        <i class="fa-solid fa-bed fa-3x text-primary mb-3 glow-icon"></i>
         <h4>Verified Listings</h4>
         <p>Only trusted and verified hostel listings with reviews and photos.</p>
       </div>
-      <div class="col-md-4">
-        <i class="fa-solid fa-wallet fa-3x text-success mb-3"></i>
+      <div class="col-md-4 glow-card p-4">
+        <i class="fa-solid fa-wallet fa-3x text-success mb-3 glow-icon"></i>
         <h4>Budget Friendly</h4>
         <p>Find accommodations that suit your pocket — from shared rooms to private stays.</p>
       </div>
-      <div class="col-md-4">
-        <i class="fa-solid fa-users fa-3x text-warning mb-3"></i>
+      <div class="col-md-4 glow-card p-4">
+        <i class="fa-solid fa-users fa-3x text-warning mb-3 glow-icon"></i>
         <h4>Community Driven</h4>
         <p>Help others by leaving reviews and tips about local hostels and areas.</p>
       </div>
@@ -41,7 +70,7 @@
     <div class="row">
       <% topHostels.forEach(hostel => { %>
         <div class="col-md-4 mb-4">
-          <div class="card shadow-sm h-100">
+          <div class="card shadow-sm h-100 glow-card">
             <% if (hostel.image && hostel.image.url) { %>
               <img src="<%= hostel.image.url %>" class="card-img-top hostel-img" alt="<%= hostel.name %>">
             <% } else { %>
@@ -60,7 +89,6 @@
                   No rating
                 <% } %>
               </p>
-
               <a href="/listings/<%= hostel._id %>" class="btn btn-outline-primary btn-sm">View Details</a>
             </div>
           </div>
@@ -69,3 +97,21 @@
     </div>
   </div>
 </section>
+
+<script>
+  const text = "Welcome to Wonderlust Hostels";
+  const speed = 100;
+  let index = 0;
+
+  function typeWriter() {
+    if (index < text.length) {
+      document.getElementById("typewriter").innerHTML += text.charAt(index);
+      index++;
+      setTimeout(typeWriter, speed);
+    } else {
+      document.getElementById("typewriter").style.borderRight = "none";
+    }
+  }
+
+  window.addEventListener("load", typeWriter);
+</script>
