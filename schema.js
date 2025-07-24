@@ -8,7 +8,19 @@ const ListSchema = Joi.object({
         image: Joi.string().uri().allow("",null),
         price: Joi.number().required().min(0),
         country: Joi.string().required(),
-        location: Joi.string().required()
+        location: Joi.string().required(),
+        category: Joi.string().valid(
+            "Trending",
+            "Room",
+            "Iconic cities",
+            "Castles",
+            "Swimming Pools",
+            "Camping",
+            "Farms",
+            "Arctic",
+            "Domes",
+            "Boats"
+        ).required()
     }).required()
 });
 

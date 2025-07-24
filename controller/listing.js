@@ -30,17 +30,33 @@ module.exports.showListing = async(req,res)=>{
     console.log(list);
     res.render("listing/show.ejs", {list} );
 };
+//  old
+// module.exports.createListing = async (req, res) => {
+//     let url = req.file.path;
+//     let filename = req.file.filename;
 
+//     const newListing = new listing(req.body.listing);
+//     newListing.owner = req.user._id;
+//     newListing.image = {url,filename};
+//     await newListing.save();
+
+//     req.flash("success","lisgin is successduly ");
+//     res.redirect("/listings");
+// };
 module.exports.createListing = async (req, res) => {
     let url = req.file.path;
     let filename = req.file.filename;
 
     const newListing = new listing(req.body.listing);
     newListing.owner = req.user._id;
-    newListing.image = {url,filename};
+    newListing.image = { url, filename };
+    
+    // ✅ Make sure category is included
+    newListing.category = req.body.listing.category;
+
     await newListing.save();
 
-    req.flash("success","lisgin is successduly ");
+    req.flash("success", "Listing successfully created!");
     res.redirect("/listings");
 };
 

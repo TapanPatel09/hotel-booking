@@ -30,10 +30,17 @@
       <p class="card-text fw-bold text-dark fs-5">
         ₹<%= list.price.toLocaleString("en-IN") %>
       </p>
+      
+    <!-- Category -->
+    <p class="card-text">
+        <span class="fw-semibold">Category:</span>
+        <span class="badge bg-secondary"><%= list.category %></span>
+    </p>
 
       <!-- Location -->
-      <p class="card-text text-muted mb-1"><%= list.location %></p>
-      <p class="card-text text-muted"><%= list.country %></p>
+      <p class="card-text text-muted mb-1"><b>Location::</b><%= list.location %></p>
+      <p class="card-text text-muted"> <b>Country::</b><%= list.country %></p>
+
 
       <!-- Action Buttons -->
       <% if(currUser && list.owner._id.equals(currUser._id)) { %>

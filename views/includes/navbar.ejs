@@ -1,39 +1,83 @@
-        <!-- Add this inside your HTML file -->
-        <!-- Navbar -->
-        <nav class="navbar navbar-expand-md bg-white border-bottom shadow-sm sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/listings/home">
-            <i class="fa-regular fa-compass"></i>
-            </a>
-            
-            <button class="navbar-toggler" 
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-link" href="/listings/home">Home</a>
-                <a class="nav-link" href="/listings">All Listings</a>
-                <a class="nav-link" href="/listings/new">Add New Place</a>
-            </div>
-            
-            <div class="navbar-nav ms-auto">
-                <% if(!currUser) { %>
-                <a class="nav-link" href="/signup">Sign Up</a>
-                <a class="nav-link" href="/login">Log In</a>
-                <% } %>
-                
-                <% if(currUser) { %>
-                    <a class="nav-link" href="/logout">Log Out</a>
-                <% } %>
+<style>
+    .navbar {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
 
-            </div>
-            </div>
+    .search-input {
+        border-radius: 25px;
+        padding: 0.5rem 1rem;
+        width: 300px;
+        font-size: 0.9rem;
+    }
+
+    .btn-search {
+        background-color: #fe4350;
+        color: #fff;
+        border-radius: 25px;
+        padding: 0.5rem 1rem;
+        margin-left: -3rem;
+        z-index: 1;
+        position: relative;
+    }
+
+    .btn-search:hover {
+        background-color: #e7333e;
+    }
+
+    @media (max-width: 768px) {
+        .search-input {
+            width: 200px;
+        }
+
+        .btn-search {
+            margin-left: -2rem;
+        }
+    }
+</style>
+
+<nav class="navbar navbar-expand-md border-bottom sticky-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+
+        <!-- Left: Logo and links -->
+        <div class="d-flex align-items-center">
+            <a class="navbar-brand me-3" href="/listings/home">
+                <i class="fa-regular fa-compass fa-xl" style="color: #fe4350;"></i>
+            </a>
+            <a class="nav-link fw-semibold me-3" href="/listings/home">Home</a>
+            <a class="nav-link fw-semibold me-3" href="/listings">Explore</a>
         </div>
-        </nav>
+
+        <!-- Center: Search Bar -->
+        <div class="d-flex justify-content-center align-items-center flex-grow-1">
+            <form class="d-flex" role="search" action="/listings/search" method="GET">
+                <input
+                    class="form-control search-input me-2"
+                    type="search"
+                    name="q"
+                    placeholder="Search destinations"
+                    aria-label="Search"
+                    required
+                />
+                <button class="btn btn-search" type="submit">
+                    <i class="fa-solid fa-magnifying-glass me-1"></i> Search
+                </button>
+            </form>
+        </div>
+
+        <!-- Right: Auth Links and Add Place -->
+        <div class="d-flex align-items-center">
+            <a class="nav-link ms-3" href="/listings/new">Add New Place</a>
+
+            <% if (!currUser) { %>
+                <a class="nav-link fw-bold ms-3" href="/signup">Sign Up</a>
+                <a class="nav-link fw-bold ms-3" href="/login">Log In</a>
+            <% } %>
+
+            <% if (currUser) { %>
+                <a class="nav-link fw-bold ms-3" href="/logout">Log Out</a>
+            <% } %>
+        </div>
+    </div>
+</nav>

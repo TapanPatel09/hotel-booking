@@ -7,33 +7,167 @@
 
 .card-hover-effect:hover {
     transform: scale(1.04);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65); /* Strong, deep shadow */
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
     z-index: 3;
+}
+
+#filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.filter {
+    text-align: center;
+    margin-right: 3rem;
+    margin-top: 2rem;
+    opacity: 0.7;
+    transition: 0.4s;
+}
+.filter:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+.filter p {
+    font-size: 0.8rem;
+}
+.hidden {
+    display: none;
+}
+.tak_toggle {
+    border: 1.5px solid black;
+    border-radius: 1rem;
+    height: 3rem;
+    padding: 1rem;
+    margin-top: 0.3rem;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
 }
 </style>
 
+<!-- FILTER BAR -->
+<div id="filters">
+    <div class="filter" data-filter="All">
+        <div><i class="fa-solid fa-layer-group"></i></div>
+        <p>All</p>
+    </div>
+    <div class="filter" data-filter="Trending">
+        <div><i class="fa-solid fa-fire"></i></div>
+        <p>Trending</p>
+    </div>
+    <div class="filter" data-filter="Room">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Room</p>
+    </div>
+    <div class="filter" data-filter="Iconic City">
+        <div><i class="fa-solid fa-mountain-city fa-lg"></i></div>
+        <p>Iconic City</p>
+    </div>
+    <div class="filter" data-filter="Castle">
+        <div><i class="fa-brands fa-fort-awesome"></i></div>
+        <p>Castles</p>
+    </div>
+    <div class="filter" data-filter="Pool">
+        <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Swimming Pools</p>
+    </div>
+    <div class="filter" data-filter="Camping">
+        <div><i class="fa-solid fa-campground"></i></div>
+        <p>Camping</p>
+    </div>
+    <div class="filter" data-filter="Farm">
+        <div><i class="fa-solid fa-tractor"></i></div>
+        <p>Farms</p>
+    </div>
+    <div class="filter" data-filter="Arctic">
+        <div><i class="fa-solid fa-snowflake"></i></div>
+        <p>Arctic</p>
+    </div>
+    <div class="filter" data-filter="Dome">
+        <div><i class="fa-solid fa-igloo"></i></div>
+        <p>Domes</p>
+    </div>
+    <div class="filter" data-filter="Boat">
+        <div><i class="fa-solid fa-sailboat"></i></div>
+        <p>Boats</p>
+    </div>
 
-        <h1 class="text mb-5 fw-bold">All Listings</h1>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <% for (let listing of alllisting) { %>
-            <div class="col">
+    <div class="tak_toggle">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+            <label class="form-check-label" for="switchCheckDefault">Display Total after Taxes</label>
+        </div>
+    </div>
+</div>
+
+<!-- LISTINGS GRID -->
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-3" id="listing-container">
+    <% for (let listing of alllisting) { %>
+        <% if (listing.image && listing.image.url) { %>
+        <div class="col listing-card" data-category="<%= listing.category %>">
             <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
                 <div class="card card-hover-effect h-100 border-0 rounded-4">
-                <div class="ratio ratio-4x3">
-                    <img src="<%= listing.image.url %>" alt="<%= listing.title %>"
-                    class="img-fluid rounded-top object-fit-cover"
-                    style="width: 100%; height: 100%;" />
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title text-dark fw-semibold mb-2"><%= listing.title %></h5>
-                    <p class="card-text text-muted mb-1"><%= listing.location %></p>
-                    <p class="card-text text-muted"><%= listing.country %></p>
-                    <p class="card-text fw-bold" style="color: #6c757d;">&#8377;<%= listing.price.toLocaleString("en-IN") %></p>
-                </div>
+                    <div class="ratio ratio-4x3">
+                        <img src="<%= listing.image.url %>" alt="<%= listing.title %>"
+                            class="img-fluid rounded-top object-fit-cover"
+                            style="width: 100%; height: 100%;" />
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title text-dark fw-semibold mb-2"><%= listing.title %></h5>
+                        <p class="card-text text-muted mb-1"><%= listing.location %></p>
+                        <p class="card-text text-muted"><%= listing.country %></p>
+                        <p class="card-text fw-bold" style="color: #6c757d;">
+                            &#8377;<%= listing.price.toLocaleString("en-IN") %>
+                        </p>
+                        <i class="hidden">+18% GST</i>
+                    </div>
                 </div>
             </a>
-            </div>
+        </div>
         <% } %>
+    <% } %>
+
+    <!-- Placeholder when no listings match -->
+    <div id="no-results" class="text-center w-100 mt-5" style="display: none;">
+        <h4>No listings in this category</h4>
     </div>
-    </div>
-</body>
+</div>
+
+<!-- TAX TOGGLE SCRIPT -->
+<script>
+    const taxSwitch = document.getElementById("switchCheckDefault");
+    taxSwitch.addEventListener("click", () => {
+        let taxInfo = document.getElementsByClassName("hidden");
+        for (let info of taxInfo) {
+            info.style.display = (info.style.display !== "inline") ? "inline" : "none";
+        }
+    });
+</script>
+
+<!-- CATEGORY FILTER SCRIPT -->
+<script>
+    const filters = document.querySelectorAll(".filter");
+    const listings = document.querySelectorAll(".listing-card");
+    const noResults = document.getElementById("no-results");
+
+    filters.forEach(filter => {
+        filter.addEventListener("click", () => {
+            const category = filter.getAttribute("data-filter");
+            let matchCount = 0;
+
+            listings.forEach(card => {
+                const cardCategory = card.getAttribute("data-category");
+                if (category === "All" || cardCategory === category) {
+                    card.style.display = "block";
+                    matchCount++;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+
+            noResults.style.display = matchCount === 0 ? "block" : "none";
+        });
+    });
+</script>
+

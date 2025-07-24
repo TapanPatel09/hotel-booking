@@ -8,7 +8,8 @@ const sampleListings = [
     },
     price: 2000,
     location: "Desert Oasis",
-    country: "United States"
+    country: "United States",
+    category: "Trending"
   },
   {
     title: "Beachside Bungalow",
@@ -19,7 +20,8 @@ const sampleListings = [
     },
     price: 2500,
     location: "Miami Beach",
-    country: "United States"
+    country: "United States",
+    category: "Swimming Pools"
   },
   {
     title: "Mountain Cabin",
@@ -30,7 +32,8 @@ const sampleListings = [
     },
     price: 1800,
     location: "Aspen",
-    country: "United States"
+    country: "United States",
+    category: "Camping"
   },
   {
     title: "Modern City Apartment",
@@ -41,7 +44,8 @@ const sampleListings = [
     },
     price: 3000,
     location: "New York",
-    country: "United States"
+    country: "United States",
+    category: "Iconic cities"
   },
   {
     title: "Tropical Treehouse",
@@ -52,7 +56,8 @@ const sampleListings = [
     },
     price: 2200,
     location: "Hilo",
-    country: "Hawaii"
+    country: "Hawaii",
+    category: "Camping"
   },
   {
     title: "Lakefront Lodge",
@@ -63,7 +68,8 @@ const sampleListings = [
     },
     price: 2100,
     location: "Lake Tahoe",
-    country: "United States"
+    country: "United States",
+    category: "Swimming Pools"
   },
   {
     title: "Rustic Barn Stay",
@@ -74,7 +80,8 @@ const sampleListings = [
     },
     price: 1700,
     location: "Nashville",
-    country: "United States"
+    country: "United States",
+    category: "Farms"
   },
   {
     title: "Ski Chalet",
@@ -85,7 +92,8 @@ const sampleListings = [
     },
     price: 2800,
     location: "Vail",
-    country: "United States"
+    country: "United States",
+    category: "Trending"
   },
   {
     title: "Historic Castle",
@@ -96,7 +104,8 @@ const sampleListings = [
     },
     price: 3500,
     location: "Edinburgh",
-    country: "Scotland"
+    country: "Scotland",
+    category: "Castles"
   },
   {
     title: "Eco Bamboo Villa",
@@ -107,7 +116,8 @@ const sampleListings = [
     },
     price: 2300,
     location: "Bali",
-    country: "Indonesia"
+    country: "Indonesia",
+    category: "Domes"
   },
   {
     title: "Seaside Villa",
@@ -118,7 +128,8 @@ const sampleListings = [
     },
     price: 4500,
     location: "Santorini",
-    country: "Greece"
+    country: "Greece",
+    category: "Swimming Pools"
   },
   {
     title: "Cozy Lakeside Cabin",
@@ -129,7 +140,8 @@ const sampleListings = [
     },
     price: 1900,
     location: "Lake Placid",
-    country: "United States"
+    country: "United States",
+    category: "Camping"
   },
   {
     title: "Urban Loft with Rooftop",
@@ -140,7 +152,8 @@ const sampleListings = [
     },
     price: 2800,
     location: "Berlin",
-    country: "Germany"
+    country: "Germany",
+    category: "Iconic cities"
   },
   {
     title: "Safari Tent Lodge",
@@ -151,7 +164,8 @@ const sampleListings = [
     },
     price: 3200,
     location: "Maasai Mara",
-    country: "Kenya"
+    country: "Kenya",
+    category: "Camping"
   },
   {
     title: "Historic Townhouse",
@@ -162,7 +176,8 @@ const sampleListings = [
     },
     price: 2100,
     location: "Boston",
-    country: "United States"
+    country: "United States",
+    category: "Room"
   },
   {
     title: "Vineyard Estate",
@@ -173,7 +188,8 @@ const sampleListings = [
     },
     price: 3800,
     location: "Napa Valley",
-    country: "United States"
+    country: "United States",
+    category: "Farms"
   },
   {
     title: "Overwater Bungalow",
@@ -184,7 +200,8 @@ const sampleListings = [
     },
     price: 5000,
     location: "Maldives",
-    country: "Maldives"
+    country: "Maldives",
+    category: "Boats"
   },
   {
     title: "Countryside Farmhouse",
@@ -195,7 +212,8 @@ const sampleListings = [
     },
     price: 1600,
     location: "Tuscany",
-    country: "Italy"
+    country: "Italy",
+    category: "Farms"
   },
   {
     title: "Luxury Penthouse",
@@ -206,7 +224,8 @@ const sampleListings = [
     },
     price: 6000,
     location: "Dubai",
-    country: "United Arab Emirates"
+    country: "United Arab Emirates",
+    category: "Iconic cities"
   },
   {
     title: "Forest Glamping Tent",
@@ -217,7 +236,8 @@ const sampleListings = [
     },
     price: 1500,
     location: "Yosemite",
-    country: "United States"
+    country: "United States",
+    category: "Camping"
   }
 ];
 
