@@ -1,173 +1,171 @@
 <% layout("/layouts/boylerplate.ejs") %>
 
+<!-- ========================= STYLES ========================= -->
 <style>
-.card-hover-effect {
-    transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
-}
+  .card {
+    transition: all 0.3s ease-in-out;
+  }
 
-.card-hover-effect:hover {
-    transform: scale(1.04);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
-    z-index: 3;
-}
-
-#filters {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.filter {
-    text-align: center;
-    margin-right: 3rem;
-    margin-top: 2rem;
-    opacity: 0.7;
-    transition: 0.4s;
-}
-.filter:hover {
-    opacity: 1;
+  .card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    transform: translateY(-5px);
     cursor: pointer;
+  }
+.gst-wrapper {
+  border: 2px solid #ccc;
+  border-radius: 25px;
+  padding: 6px 16px;
+  background-color: #fff;
+  height: 40px;
+  display: flex;    
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
 }
-.filter p {
-    font-size: 0.8rem;
+
+.gst-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+  border-radius: 2rem;
+  padding: 6px 14px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  height: 100%;
+  overflow: hidden;
 }
-.hidden {
-    display: none;
+
+.gst-checkbox {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #999;
+  border-radius: 50%;
+  background-color: #e6e6e6;
+  margin-right: 8px;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
 }
-.tak_toggle {
-    border: 1.5px solid black;
-    border-radius: 1rem;
-    height: 3rem;
-    padding: 1rem;
-    margin-top: 0.3rem;
-    margin-left: 1rem;
-    display: flex;
-    align-items: center;
+
+.gst-checkbox:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
 }
+
+.gst-label {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #333;
+  white-space: nowrap;
+}
+
+  .tak_toggle input {
+    margin-right: 10px;
+  }
+  
 </style>
 
-<!-- FILTER BAR -->
-<div id="filters">
-    <div class="filter" data-filter="All">
-        <div><i class="fa-solid fa-layer-group"></i></div>
-        <p>All</p>
-    </div>
-    <div class="filter" data-filter="Trending">
-        <div><i class="fa-solid fa-fire"></i></div>
-        <p>Trending</p>
-    </div>
-    <div class="filter" data-filter="Room">
-        <div><i class="fa-solid fa-bed"></i></div>
-        <p>Room</p>
-    </div>
-    <div class="filter" data-filter="Iconic City">
-        <div><i class="fa-solid fa-mountain-city fa-lg"></i></div>
-        <p>Iconic City</p>
-    </div>
-    <div class="filter" data-filter="Castle">
-        <div><i class="fa-brands fa-fort-awesome"></i></div>
-        <p>Castles</p>
-    </div>
-    <div class="filter" data-filter="Pool">
-        <div><i class="fa-solid fa-person-swimming"></i></div>
-        <p>Swimming Pools</p>
-    </div>
-    <div class="filter" data-filter="Camping">
-        <div><i class="fa-solid fa-campground"></i></div>
-        <p>Camping</p>
-    </div>
-    <div class="filter" data-filter="Farm">
-        <div><i class="fa-solid fa-tractor"></i></div>
-        <p>Farms</p>
-    </div>
-    <div class="filter" data-filter="Arctic">
-        <div><i class="fa-solid fa-snowflake"></i></div>
-        <p>Arctic</p>
-    </div>
-    <div class="filter" data-filter="Dome">
-        <div><i class="fa-solid fa-igloo"></i></div>
-        <p>Domes</p>
-    </div>
-    <div class="filter" data-filter="Boat">
-        <div><i class="fa-solid fa-sailboat"></i></div>
-        <p>Boats</p>
-    </div>
+<% const activeCategory = typeof categoryName !== 'undefined' ? categoryName : null; %>
 
-    <div class="tak_toggle">
-        <div class="form-check-reverse form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-            <label class="form-check-label" for="switchCheckDefault">Display Total after Taxes</label>
-        </div>
-    </div>
+<% const categories = [
+  { name: "Trending", icon: "fa-fire" },
+  { name: "Room", icon: "fa-bed" },
+  { name: "Iconic cities", icon: "fa-city" },
+  { name: "Castles", icon: "fa-chess-rook" },
+  { name: "Swimming Pools", icon: "fa-swimmer" },
+  { name: "Camping", icon: "fa-campground" },
+  { name: "Farms", icon: "fa-tractor" },
+  { name: "Arctic", icon: "fa-snowflake" },
+  { name: "Domes", icon: "fa-igloo" },
+  { name: "Boats", icon: "fa-sailboat" }
+]; %>
+
+<!-- ========================= CATEGORY FILTER BAR ========================= -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="container mt-5">
+  <div class="d-flex justify-content-between overflow-auto pb-3 border-bottom">
+
+    <!-- Categories -->
+    <% categories.forEach(cat => { 
+         const isActive = activeCategory === cat.name; %>
+      <a 
+        href="/listings/category/<%= cat.name %>" 
+        class="text-center text-decoration-none px-3 py-2 <% if (isActive) { %> text-primary border-bottom border-2 <% } else { %> text-muted <% } %>">
+        <i class="fa <%= cat.icon %> fa-lg d-block mb-1"></i>
+        <small><%= cat.name %></small>
+      </a>
+    <% }) %>
+
+    <!-- GST Toggle -->
+   <!-- GST Toggle -->
+<div class="d-flex align-items-center gst-wrapper">
+  <div class="form-check form-switch m-0">
+    <input class="form-check-input" type="checkbox" role="switch" id="gstToggle">
+  </div>
+  <label class="form-check-label ms-2" for="gstToggle">+18% GST</label>
 </div>
 
-<!-- LISTINGS GRID -->
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-3" id="listing-container">
-    <% for (let listing of alllisting) { %>
-        <% if (listing.image && listing.image.url) { %>
-        <div class="col listing-card" data-category="<%= listing.category %>">
-            <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-                <div class="card card-hover-effect h-100 border-0 rounded-4">
-                    <div class="ratio ratio-4x3">
-                        <img src="<%= listing.image.url %>" alt="<%= listing.title %>"
-                            class="img-fluid rounded-top object-fit-cover"
-                            style="width: 100%; height: 100%;" />
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title text-dark fw-semibold mb-2"><%= listing.title %></h5>
-                        <p class="card-text text-muted mb-1"><%= listing.location %></p>
-                        <p class="card-text text-muted"><%= listing.country %></p>
-                        <p class="card-text fw-bold" style="color: #6c757d;">
-                            &#8377;<%= listing.price.toLocaleString("en-IN") %>
-                        </p>
-                        <i class="hidden">+18% GST</i>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <% } %>
+
+    
+</div>
+  </div>
+</div>
+
+<!-- ========================= PAGE HEADING ========================= -->
+<div class="container mb-4 mt-3">
+  <% if (typeof categoryName !== 'undefined') { %>
+    <h2>Category: <%= categoryName %></h2>
+  <% } else { %>
+    <h2>All Listings</h2>
+  <% } %>
+</div>
+
+<!-- ========================= LISTINGS GRID ========================= -->
+<div class="container">
+  <div class="row">
+    <% if (alllisting.length === 0) { %>
+      <div class="col-12">
+        <p class="text-muted">No listings found in this category.</p>
+      </div>
     <% } %>
 
-    <!-- Placeholder when no listings match -->
-    <div id="no-results" class="text-center w-100 mt-5" style="display: none;">
-        <h4>No listings in this category</h4>
-    </div>
+    <% alllisting.forEach(listing => { %>
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm listing-card" data-category="<%= listing.category %>">
+          <img src="<%= listing.image.url %>" class="card-img-top" style="height: 250px; object-fit: cover;" alt="<%= listing.title %>">
+          <div class="card-body">
+            <h5 class="card-title"><%= listing.title %></h5>
+            <p class="card-text"><%= listing.description.length > 100 ? listing.description.substring(0, 100) + '...' : listing.description %></p>
+            <p><strong>Price:</strong> ₹<span class="price"><%= listing.price %></span></p>
+            <p><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></p>
+            <a href="/listings/<%= listing._id %>" class="btn btn-sm btn-outline-success">View Details</a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
 </div>
 
-<!-- TAX TOGGLE SCRIPT -->
+<!-- ========================= GST Script ========================= -->
 <script>
-    const taxSwitch = document.getElementById("switchCheckDefault");
-    taxSwitch.addEventListener("click", () => {
-        let taxInfo = document.getElementsByClassName("hidden");
-        for (let info of taxInfo) {
-            info.style.display = (info.style.display !== "inline") ? "inline" : "none";
-        }
+  const gstToggle = document.getElementById("gstToggle");
+  const priceElements = document.querySelectorAll(".price");
+
+  gstToggle.addEventListener("change", () => {
+    priceElements.forEach(el => {
+      const originalPrice = parseFloat(el.innerText);
+      if (gstToggle.checked) {
+        const gstPrice = (originalPrice * 1.18).toFixed(2) + "+18 GST Added";
+        el.innerText = gstPrice;
+      } else {
+        const basePrice = (originalPrice / 1.18).toFixed(2);
+        el.innerText = basePrice;
+      }
     });
+  });
 </script>
-
-<!-- CATEGORY FILTER SCRIPT -->
-<script>
-    const filters = document.querySelectorAll(".filter");
-    const listings = document.querySelectorAll(".listing-card");
-    const noResults = document.getElementById("no-results");
-
-    filters.forEach(filter => {
-        filter.addEventListener("click", () => {
-            const category = filter.getAttribute("data-filter");
-            let matchCount = 0;
-
-            listings.forEach(card => {
-                const cardCategory = card.getAttribute("data-category");
-                if (category === "All" || cardCategory === category) {
-                    card.style.display = "block";
-                    matchCount++;
-                } else {
-                    card.style.display = "none";
-                }
-            });
-
-            noResults.style.display = matchCount === 0 ? "block" : "none";
-        });
-    });
-</script>
-

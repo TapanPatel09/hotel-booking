@@ -59,6 +59,25 @@ router
     .put(isLoggedin, isOwner, upload.single("listing[image]"), validatelisting, wrapasync(ListingController.updateListing))
     .delete(isLoggedin, isOwner, wrapasync(ListingController.deleteListing));
 
+
 router.get("/:id/edit", isLoggedin, isOwner, wrapasync(ListingController.renderEditForm));
+
+router.get("/category/:category", async (req, res) => {
+    const category = req.params.category;
+
+    const listings = await Listing.find({ category });
+
+    const categories = [
+        "Trending", "Room", "Iconic cities", "Castles", "Swimming Pools",
+        "Camping", "Farms", "Arctic", "Domes", "Boats"
+    ];
+
+    res.render("listing/index.ejs", {
+        alllisting: listings,
+        categoryName: category,
+        categories
+    });
+});
+
 
 module.exports = router;
