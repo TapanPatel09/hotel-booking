@@ -7,90 +7,66 @@
   <h3 class="mb-4">Create a New Listing</h3>
 
   <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
-    <!-- Title -->
-    <div class="mb-3">
-      <label class="form-label">Title</label>
-      <input
-        type="text"
-        class="form-control"
-        name="listing[title]"
-        placeholder="Add a catchy title"
-        required
-      />
-      <div class="valid-feedback">Title looks good!</div>
-      <div class="invalid-feedback">Please enter a title.</div>
+    
+    <div class="row">
+      <!-- Title -->
+      <div class="col-md-8 mb-3">
+        <label class="form-label">Title</label>
+        <input type="text" class="form-control" name="listing[title]" placeholder="Add a catchy title" required />
+        <div class="valid-feedback">Title looks good!</div>
+        <div class="invalid-feedback">Please enter a title.</div>
+      </div>
+
+      <!-- Price -->
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Price</label>
+        <input type="number" class="form-control" name="listing[price]" placeholder="Enter price" required />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please enter a valid price.</div>
+      </div>
     </div>
 
     <!-- Description -->
     <div class="mb-3">
       <label class="form-label">Description</label>
-      <textarea
-        class="form-control"
-        name="listing[description]"
-        placeholder="Enter a brief description"
-        required
-      ></textarea>
+      <textarea class="form-control" name="listing[description]" placeholder="Enter a brief description" rows="3" required></textarea>
       <div class="valid-feedback">Looks good!</div>
       <div class="invalid-feedback">Please enter a description.</div>
     </div>
 
-    <!-- Image -->
+    <!-- Image Upload -->
     <div class="mb-3">
       <label class="form-label">Upload Image</label>
-      <input
-        type="file"
-        class="form-control"
-        name="listing[image]"
-        required
-      />
+      <input type="file" class="form-control" name="listing[image]" required />
       <div class="valid-feedback">Image looks good!</div>
       <div class="invalid-feedback">Please upload an image.</div>
     </div>
 
-    <!-- Price -->
-    <div class="mb-3">
-      <label class="form-label">Price</label>
-      <input
-        type="number"
-        class="form-control"
-        name="listing[price]"
-        placeholder="Enter price"
-        required
-      />
-      <div class="valid-feedback">Looks good!</div>
-      <div class="invalid-feedback">Please enter a valid price.</div>
-    </div>
+    <div class="row">
+      <!-- Country Dropdown -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Country</label>
+          <select name="listing[country]" class="form-control" required>
+            <option value="">Select country</option>
+            <% const countries = ["India", "United States", "United Kingdom", "Canada", "Germany", "France", "Australia", "Japan", "Brazil", "South Africa"]; %>
+            <% countries.forEach(c => { %>
+              <option value="<%= c %>"><%= c %></option>
+            <% }) %>
+          </select>
+          <div class="invalid-feedback">Please select a country.</div>
+        </div>
 
-    <!-- Country -->
-    <div class="mb-3">
-      <label class="form-label">Country</label>
-      <input
-        type="text"
-        class="form-control"
-        name="listing[country]"
-        placeholder="Enter country"
-        required
-      />
-      <div class="valid-feedback">Looks good!</div>
-      <div class="invalid-feedback">Please enter a country.</div>
-    </div>
-
-    <!-- Location -->
-    <div class="mb-3">
-      <label class="form-label">Location</label>
-      <input
-        type="text"
-        class="form-control"
-        name="listing[location]"
-        placeholder="Enter location"
-        required
-      />
-      <div class="valid-feedback">Looks good!</div>
-      <div class="invalid-feedback">Please enter a location.</div>
+      <!-- Location -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Location</label>
+        <input type="text" class="form-control" name="listing[location]" placeholder="Enter location" required />
+        <div class="valid-feedback">Looks good!</div>
+        <div class="invalid-feedback">Please enter a location.</div>
+      </div>
     </div>
 
     <!-- Category -->
-    <div class="mb-3">
+    <div class="mb-4">
       <label class="form-label">Category</label>
       <select name="listing[category]" class="form-control" required>
         <option value="">Select category</option>

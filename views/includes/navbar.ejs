@@ -1,83 +1,120 @@
 <style>
-    .navbar {
-        background-color: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-    }
-
     .search-input {
         border-radius: 25px;
-        padding: 0.5rem 1rem;
-        width: 300px;
+        padding: 0.4rem 1rem;
         font-size: 0.9rem;
+        width: 100%;
+        max-width: 400px;
     }
 
     .btn-search {
         background-color: #fe4350;
         color: #fff;
         border-radius: 25px;
-        padding: 0.5rem 1rem;
-        margin-left: -3rem;
-        z-index: 1;
-        position: relative;
+        padding: 0.4rem 1rem;
     }
 
     .btn-search:hover {
         background-color: #e7333e;
     }
 
+    .navbar {
+        padding: 0.3rem 1rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .nav-link {
+        font-size: 0.95rem;
+    }
+
     @media (max-width: 768px) {
         .search-input {
-            width: 200px;
-        }
-
-        .btn-search {
-            margin-left: -2rem;
+            max-width: 100%;
         }
     }
 </style>
 
-<nav class="navbar navbar-expand-md border-bottom sticky-top">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-white border-bottom sticky-top shadow-sm">
+    <div class="container-fluid position-relative">
+        <!-- Left: Brand -->
+        <a class="navbar-brand d-flex align-items-center" href="/listings/home">
+            <i class="fa-regular fa-compass fa-lg me-1 " style="color: #fe4350;"></i>
+            <span class="fw-bold">StayNest</span>
+        </a>
+        <b><a class="nav-link ms-1" href="/listings">Explore</a></b>
 
-        <!-- Left: Logo and links -->
-        <div class="d-flex align-items-center">
-            <a class="navbar-brand me-3" href="/listings/home">
-                <i class="fa-regular fa-compass fa-xl" style="color: #fe4350;"></i>
-            </a>
-            <a class="nav-link fw-semibold me-3" href="/listings/home">Home</a>
-            <a class="nav-link fw-semibold me-3" href="/listings">Explore</a>
-        </div>
 
-        <!-- Center: Search Bar -->
-        <div class="d-flex justify-content-center align-items-center flex-grow-1">
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Center: Search Bar (Desktop Only) -->
+        <div class="position-absolute top-50 start-50 translate-middle d-none d-md-block w-50">
             <form class="d-flex" role="search" action="/listings/search" method="GET">
-                <input
-                    class="form-control search-input me-2"
-                    type="search"
-                    name="q"
-                    placeholder="Search destinations"
-                    aria-label="Search"
-                    required
-                />
+                <input class="form-control search-input me-2" type="search" name="q" placeholder="Search destinations" aria-label="Search" required />
                 <button class="btn btn-search" type="submit">
                     <i class="fa-solid fa-magnifying-glass me-1"></i> Search
                 </button>
             </form>
         </div>
 
-        <!-- Right: Auth Links and Add Place -->
-        <div class="d-flex align-items-center">
+        <!-- Right: Desktop Nav Links -->
+        <div class="d-none d-md-flex align-items-center ms-auto">
             <a class="nav-link ms-3" href="/listings/new">Add New Place</a>
-
             <% if (!currUser) { %>
                 <a class="nav-link fw-bold ms-3" href="/signup">Sign Up</a>
                 <a class="nav-link fw-bold ms-3" href="/login">Log In</a>
-            <% } %>
-
-            <% if (currUser) { %>
+            <% } else { %>
                 <a class="nav-link fw-bold ms-3" href="/logout">Log Out</a>
             <% } %>
         </div>
     </div>
 </nav>
+
+<!-- Mobile Search Bar -->
+<div class="d-md-none px-3 py-2 bg-white border-bottom">
+    <form class="d-flex" role="search" action="/listings/search" method="GET">
+        <input class="form-control search-input me-2" type="search" name="q" placeholder="Search destinations" aria-label="Search" required />
+        <button class="btn btn-search ms-2" type="submit">
+            <i class="fa-solid fa-magnifying-glass me-1"></i> Search
+        </button>
+    </form>
+</div>
+
+<!-- Offcanvas Sidebar (Mobile) -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebar">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/listings/home">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/listings">Explore</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/listings/new">Add New Place</a>
+            </li>
+            <% if (!currUser) { %>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold" href="/signup">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold" href="/login">Log In</a>
+                </li>
+            <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link fw-bold" href="/logout">Log Out</a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+</div>

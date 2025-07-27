@@ -11,62 +11,76 @@
     transform: translateY(-5px);
     cursor: pointer;
   }
-.gst-wrapper {
-  border: 2px solid #ccc;
-  border-radius: 25px;
-  padding: 6px 16px;
-  background-color: #fff;
-  height: 40px;
-  display: flex;    
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-}
 
-.gst-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #ccc;
-  border-radius: 2rem;
-  padding: 6px 14px;
-  background-color: #fff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  height: 100%;
-  overflow: hidden;
-}
-
-.gst-checkbox {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #999;
-  border-radius: 50%;
-  background-color: #e6e6e6;
-  margin-right: 8px;
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
-}
-
-.gst-checkbox:checked {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-}
-
-.gst-label {
-  font-weight: 500;
-  font-size: 1rem;
-  color: #333;
-  white-space: nowrap;
-}
-
-  .tak_toggle input {
-    margin-right: 10px;
+  .gst-wrapper {
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    padding: 6px 16px;
+    background-color: #fff;
+    height: 40px;
+    display: flex;    
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
   }
-  
+
+  .gst-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ccc;
+    border-radius: 2rem;
+    padding: 6px 14px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .gst-checkbox {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #999;
+    border-radius: 50%;
+    background-color: #e6e6e6;
+    margin-right: 8px;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .gst-checkbox:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+  }
+
+  .gst-label {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #333;
+    white-space: nowrap;
+  }
+
+  .btn-view-details {
+    background-color: #fe4350;
+    color: #fff;
+    border-radius: 25px;
+    padding: 6px 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .btn-view-details:hover {
+    background-color: #e7333e;
+    color: #fff;
+    transform: scale(1.03);
+  }
 </style>
 
 <% const activeCategory = typeof categoryName !== 'undefined' ? categoryName : null; %>
@@ -89,10 +103,8 @@
 
 <div class="container mt-5">
   <div class="d-flex justify-content-between overflow-auto pb-3 border-bottom">
-
-    <!-- Categories -->
     <% categories.forEach(cat => { 
-         const isActive = activeCategory === cat.name; %>
+      const isActive = activeCategory === cat.name; %>
       <a 
         href="/listings/category/<%= cat.name %>" 
         class="text-center text-decoration-none px-3 py-2 <% if (isActive) { %> text-primary border-bottom border-2 <% } else { %> text-muted <% } %>">
@@ -102,17 +114,12 @@
     <% }) %>
 
     <!-- GST Toggle -->
-   <!-- GST Toggle -->
-<div class="d-flex align-items-center gst-wrapper">
-  <div class="form-check form-switch m-0">
-    <input class="form-check-input" type="checkbox" role="switch" id="gstToggle">
-  </div>
-  <label class="form-check-label ms-2" for="gstToggle">+18% GST</label>
-</div>
-
-
-    
-</div>
+    <div class="d-flex align-items-center gst-wrapper">
+      <div class="form-check form-switch m-0">
+        <input class="form-check-input" type="checkbox" role="switch" id="gstToggle">
+      </div>
+      <label class="form-check-label ms-2" for="gstToggle">+18% GST</label>
+    </div>
   </div>
 </div>
 
@@ -136,17 +143,19 @@
 
     <% alllisting.forEach(listing => { %>
       <div class="col-md-4 mb-4">
-        <div class="card shadow-sm listing-card" data-category="<%= listing.category %>">
-          <img src="<%= listing.image.url %>" class="card-img-top" style="height: 250px; object-fit: cover;" alt="<%= listing.title %>">
-          <div class="card-body">
-            <h5 class="card-title"><%= listing.title %></h5>
-            <p class="card-text"><%= listing.description.length > 100 ? listing.description.substring(0, 100) + '...' : listing.description %></p>
-            <p><strong>Price:</strong> ₹<span class="price"><%= listing.price %></span></p>
-            <p><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></p>
-            <a href="/listings/<%= listing._id %>" class="btn btn-sm btn-outline-success">View Details</a>
-          </div>
-        </div>
+  <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+    <div class="card shadow-sm listing-card" data-category="<%= listing.category %>">
+      <img src="<%= listing.image.url %>" class="card-img-top" style="height: 250px; object-fit: cover;" alt="<%= listing.title %>">
+      <div class="card-body">
+        <h5 class="card-title"><%= listing.title %></h5>
+        <p class="card-text"><%= listing.description.length > 100 ? listing.description.substring(0, 100) + '...' : listing.description %></p>
+        <p><strong>Price:</strong> ₹<span class="price"><%= listing.price %></span></p>
+        <p><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></p>
       </div>
+    </div>
+  </a>
+</div>
+
     <% }) %>
   </div>
 </div>
