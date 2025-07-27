@@ -126,6 +126,7 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -140,17 +141,34 @@ const userRoute = require("./routes/user.js");
 const ExpressError = require("./utill/expresserror.js");
 
 // MongoDB connection
-const mongo_url = "mongodb://127.0.0.1:27017/wonderlust";
+// const mongo_url = "mongodb://127.0.0.1:27017/wonderlust";
+
+const db_url =process.env.ATLASTDB_URL;
+
 async function main() {
-    await mongoose.connect(mongo_url);
+    await mongoose.connect(db_url);
 }
 main()
     .then(() => console.log("✅ Connected to DB"))
     .catch((err) => console.log("❌ DB connection error:", err));
 
+//mongos
+const store = MongoStore.create({
+    mongoUrl:db_url,
+    crypto:{
+        secret:process.env.SECRET,
+    },
+    touchAfter:24*3600,
+});
+
+store.on((err)=>{
+    console.log("error in mongo session store",err);
+});
+
 // Session config
 const sessionOptions = {
-    secret: "mysuper",
+    store,
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -172,6 +190,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session(sessionOptions));
 app.use(flash());
+
 
 // Passport.js setup
 app.use(passport.initialize());

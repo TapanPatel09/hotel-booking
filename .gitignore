@@ -3,19 +3,20 @@ node_modules/
 
 # Environment variables
 .env
+**/.DS_Store
 
-# Logs
-*.log
-npm-debug.log*
+# # Logs
+# *.log
+# npm-debug.log*
 
-# OS files
-.DS_Store
-Thumbs.db
+# # OS files
+# .DS_Store
+# Thumbs.db
 
-# IDE files
-.vscode/
-.idea/
+# # IDE files
+# .vscode/
+# .idea/
 
-# Uploaded files (if applicable)
-public/uploads/
-.env
+# # Uploaded files (if applicable)
+# public/uploads/
+# .env

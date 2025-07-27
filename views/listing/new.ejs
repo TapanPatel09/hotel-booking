@@ -1,15 +1,18 @@
 <% layout("/layouts/boylerplate.ejs") %>
 
+<% const categories = ["Trending", "Room", "Iconic cities", "Castles", "Swimming Pools", "Camping", "Farms", "Arctic", "Domes", "Boats"]; %>
+<% const selectedCategory = (typeof list !== 'undefined' && list.category) || ""; %>
+
 <div class="container mt-5">
   <h3 class="mb-4">Create a New Listing</h3>
 
-  <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data" >
+  <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+    <!-- Title -->
     <div class="mb-3">
-<!-- title -->
       <label class="form-label">Title</label>
       <input
         type="text"
-        class="form-control"  
+        class="form-control"
         name="listing[title]"
         placeholder="Add a catchy title"
         required
@@ -17,7 +20,8 @@
       <div class="valid-feedback">Title looks good!</div>
       <div class="invalid-feedback">Please enter a title.</div>
     </div>
-<!-- description -->
+
+    <!-- Description -->
     <div class="mb-3">
       <label class="form-label">Description</label>
       <textarea
@@ -29,21 +33,21 @@
       <div class="valid-feedback">Looks good!</div>
       <div class="invalid-feedback">Please enter a description.</div>
     </div>
-<!-- image -->
+
+    <!-- Image -->
     <div class="mb-3">
-      <label class="form-label">Upload Image </label>
+      <label class="form-label">Upload Image</label>
       <input
-      
         type="file"
         class="form-control"
         name="listing[image]"
-        placeholder="Enter image URL/Link"
         required
       />
-      <div class="valid-feedback">Image URL looks good!</div>
-      <div class="invalid-feedback">Please enter a valid URL.</div>
+      <div class="valid-feedback">Image looks good!</div>
+      <div class="invalid-feedback">Please upload an image.</div>
     </div>
-<!-- price -->
+
+    <!-- Price -->
     <div class="mb-3">
       <label class="form-label">Price</label>
       <input
@@ -56,7 +60,8 @@
       <div class="valid-feedback">Looks good!</div>
       <div class="invalid-feedback">Please enter a valid price.</div>
     </div>
-<!-- countery -->
+
+    <!-- Country -->
     <div class="mb-3">
       <label class="form-label">Country</label>
       <input
@@ -69,7 +74,8 @@
       <div class="valid-feedback">Looks good!</div>
       <div class="invalid-feedback">Please enter a country.</div>
     </div>
-<!-- location -->
+
+    <!-- Location -->
     <div class="mb-3">
       <label class="form-label">Location</label>
       <input
@@ -82,20 +88,20 @@
       <div class="valid-feedback">Looks good!</div>
       <div class="invalid-feedback">Please enter a location.</div>
     </div>
-<!-- category -->
-<div class="mb-3">
-  <label class="form-label">Category</label>
-  <select name="listing[category]" class="form-control" required>
-    <option value="">Select category</option>
-    <% const categories = ["Trending", "Room", "Iconic cities", "Castles", "Swimming Pools", "Camping", "Farms", "Arctic", "Domes", "Boats"]; %>
-    <% categories.forEach(cat => { %>
-      <option value="<%= cat %>" <%= list.category === cat ? 'selected' : '' %>><%= cat %></option>
-    <% }) %>
-  </select>
-  <div class="invalid-feedback">Please select a category.</div>
-</div>
 
+    <!-- Category -->
+    <div class="mb-3">
+      <label class="form-label">Category</label>
+      <select name="listing[category]" class="form-control" required>
+        <option value="">Select category</option>
+        <% categories.forEach(cat => { %>
+          <option value="<%= cat %>" <%= selectedCategory === cat ? 'selected' : '' %>><%= cat %></option>
+        <% }) %>
+      </select>
+      <div class="invalid-feedback">Please select a category.</div>
+    </div>
 
+    <!-- Submit -->
     <button type="submit" class="btn btn-primary">Add Listing</button>
   </form>
 </div>
@@ -106,17 +112,13 @@
     "use strict";
     const forms = document.querySelectorAll(".needs-validation");
     Array.from(forms).forEach((form) => {
-      form.addEventListener(
-        "submit",
-        (event) => {
-          if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
-          form.classList.add("was-validated");
-        },
-        false
-      );
+      form.addEventListener("submit", (event) => {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add("was-validated");
+      }, false);
     });
   })();
 </script>
