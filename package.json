@@ -1,6 +1,6 @@
 {
-  "engines":{
-      "node": "22.14.0"
+  "engines": {
+    "node": "22.14.0"
   },
   "name": "first",
   "version": "1.0.0",
@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^9.9.0",
     "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",
