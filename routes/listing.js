@@ -13,16 +13,25 @@ const upload = multer({ storage });
 const ListingController = require("../controller/listing.js");
 
 // ✅ Home Route
+// routes/listing.js
 router.get("/home", async (req, res) => {
-    const topHostels = await Listing.find({})
-        .populate({
-            path: "review",
-            select: "rating"
-        })
-        .limit(6);
+    try {
+        const listings = await Listing.find({});
+        const topHostels = await Listing.find({})
+            .populate("review")
+            .limit(6);
 
-    res.render("listing/home.ejs", { currUser: req.user, topHostels });
+        res.render("listing/home.ejs", {
+            currUser: req.user,
+            listings,      // ✅ PASS listings to EJS
+            topHostels     // ✅ PASS topHostels too
+        });
+    } catch (err) {
+        console.error("Error rendering home:", err);
+        res.status(500).send("Internal Server Error");
+    }
 });
+
 
 // ✅ Search Route - must be ABOVE any "/:id"
 router.get("/search", async (req, res) => {

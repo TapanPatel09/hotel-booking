@@ -23,10 +23,92 @@
     transform: scale(1.2);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   }
+/* Glass hero background */
+.glass-hero {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin: 40px auto;
+  max-width: 90%;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+}
+
+/* Optional: set a background image behind the blur for more effect */
+body {
+  background: url('/images/bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* Glass button styling */
+.glass-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 10px 24px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: #000;
+}
+
+
+  #rotating-hero {
+    color: white;
+    position: relative;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .text-shadow {
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+  }
+/* Glassmorphism Style for Hostel Cards */
+.glass-card {
+  /* background: rgba(255, 255, 255, 0.08); */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: white;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Optional: Dark Background for Section */
+.top-rated-section {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+}
+
+
+
+  #dynamic-hero {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 500px;
+    transition: background-image 1s ease-in-out;
+  }
+
 </style>
 
-<section class="py-5 text-center bg-light">
-  <div class="container">
+<section class="py-5 text-center glass-hero" id="rotating-hero">
+  <div class="container text-white text-shadow">
     <div class="d-flex justify-content-center">
       <h1 class="display-4 fw-bold typewriter-text text-center" id="typewriter"></h1>
     </div>
@@ -34,12 +116,16 @@
     <p class="lead">
       Discover and list the best hostels around your campus or city. Affordable stays, verified listings, and a community you can trust.
     </p>
+
     <a href="/listings" class="btn btn-primary btn-lg mt-3">Explore Hostels</a>
     <% if (!currUser) { %>
-      <a href="/signup" class="btn btn-outline-secondary btn-lg mt-3 ms-3">Join Now</a>
+      <a href="/signup" class="btn glass-btn btn-lg mt-3 ms-3">Join Now</a>
     <% } %>
   </div>
 </section>
+
+
+
 
 <section class="py-5">
   <div class="container">
@@ -64,34 +150,41 @@
   </div>
 </section>
 
-<section class="bg-light py-5">
+<section class="py-5 top-rated-section">
   <div class="container">
-    <h2 class="mb-4 text-center">Top Rated Hostels</h2>
-    <div class="row">
+    <h2 class="mb-5 text-center fw-bold text-white">Top Rated Hostels</h2>
+
+    <div class="row g-4">
       <% topHostels.forEach(hostel => { %>
-        <div class="col-md-4 mb-4">
-          <div class="card shadow-sm h-100 glow-card">
-            <% if (hostel.image && hostel.image.url) { %>
-              <img src="<%= hostel.image.url %>" class="card-img-top hostel-img" alt="<%= hostel.name %>">
-            <% } else { %>
-              <div class="card-img-top bg-secondary text-white d-flex align-items-center justify-content-center hostel-img" style="height: 200px;">
-                <span>No Image</span>
+        <div class="col-md-6 col-lg-4">
+          <a href="/listings/<%= hostel._id %>" class="text-decoration-none">
+            <div class="glass-card position-relative overflow-hidden p-0 h-100 text-white" style="transition: transform 0.3s; border-radius: 1rem;">
+              <% if (hostel.image && hostel.image.url) { %>
+                <img src="<%= hostel.image.url %>" class="card-img-top rounded-top" style="height: 220px; object-fit: cover;" alt="<%= hostel.title %>">
+              <% } else { %>
+                <div class="bg-secondary d-flex align-items-center justify-content-center text-white" style="height: 220px;">
+                  No Image
+                </div>
+              <% } %>
+
+              <div class="p-3">
+                <h5 class="fw-semibold"><%= hostel.title %></h5>
+                <p class="mb-2"><i class="fa-solid fa-location-dot me-1 text-warning"></i> <%= hostel.location || 'Location not provided' %></p>
+
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <% if (hostel.review.length > 0) { %>
+                      <%= hostel.review[0].rating %>/5
+                    <% } else { %>
+                      <span class="text-muted">No rating</span>
+                    <% } %>
+                  </div>
+                  <span class="btn btn-sm btn-outline-light rounded-pill">View</span>
+                </div>
               </div>
-            <% } %>
-            <div class="card-body">
-              <h5 class="card-title"><%= hostel.title %></h5>
-              <p class="card-text text-muted"><%= hostel.location || 'No location' %></p>
-              <p>
-                <i class="fa-solid fa-star text-warning"></i>
-                <% if (hostel.review.length > 0) { %>
-                  <%= hostel.review[0].rating %>/5
-                <% } else { %>
-                  No rating
-                <% } %>
-              </p>
-              <a href="/listings/<%= hostel._id %>" class="btn btn-outline-primary btn-sm">View Details</a>
             </div>
-          </div>
+          </a>
         </div>
       <% }) %>
     </div>
@@ -99,6 +192,30 @@
 </section>
 
 <script>
+  const images = [
+  <% topHostels.forEach((hostel, index) => { %>
+    "<%= hostel.image?.url %>"<%= index < topHostels.length - 1 ? ',' : '' %>
+  <% }) %>
+];
+
+
+  let current = 0;
+  const section = document.getElementById('rotating-hero');
+
+  function changeBackground() {
+    if (images.length > 0) {
+      section.style.backgroundImage = `url(${images[current]})`;
+      section.style.backgroundSize = "cover";
+      section.style.backgroundPosition = "center";
+      section.style.transition = "background-image 1s ease-in-out";
+      current = (current + 1) % images.length;
+    }
+  }
+
+  changeBackground(); // show first image immediately
+  setInterval(changeBackground, 4000); // change every 6 seconds
+
+
   const text = "Welcome to Wonderlust Hostels";
   const speed = 100;
   let index = 0;

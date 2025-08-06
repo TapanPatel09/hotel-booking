@@ -1,90 +1,197 @@
 <% layout("/layouts/boylerplate.ejs") %>
 
+<!-- ========================= FONTS & ICONS ========================= -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
 <!-- ========================= STYLES ========================= -->
 <style>
-  .card {
-    transition: all 0.3s ease-in-out;
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
   }
 
-  .card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-    transform: translateY(-5px);
-    cursor: pointer;
-  }
-
-  .gst-wrapper {
-    border: 2px solid #ccc;
-    border-radius: 25px;
-    padding: 6px 16px;
-    background-color: #fff;
-    height: 40px;
-    display: flex;    
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-  }
-
-  .gst-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ccc;
-    border-radius: 2rem;
-    padding: 6px 14px;
-    background-color: #fff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .gst-checkbox {
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 2px solid #999;
-    border-radius: 50%;
-    background-color: #e6e6e6;
-    margin-right: 8px;
+  .category-scroll-container {
     position: relative;
-    cursor: pointer;
-    display: inline-block;
+    margin-top: 2rem;
   }
 
-  .gst-checkbox:checked {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+  .category-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
   }
 
-  .gst-label {
-    font-weight: 500;
-    font-size: 1rem;
-    color: #333;
-    white-space: nowrap;
+  .category-scroll::-webkit-scrollbar {
+    display: none;
   }
 
-  .btn-view-details {
-    background-color: #fe4350;
-    color: #fff;
-    border-radius: 25px;
-    padding: 6px 16px;
-    font-weight: 500;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    display: inline-block;
-    text-align: center;
+  .category-pill {
+    flex-shrink: 0;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #555;
+    transition: all 0.3s ease;
     text-decoration: none;
   }
 
+  .category-pill:hover,
+  .category-active {
+    background: linear-gradient(to right, #0d6efd, #5a8dee);
+    color: #fff !important;
+    border-color: #0d6efd;
+  }
+
+  .scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  .scroll-left {
+    left: -15px;
+  }
+
+  .scroll-right {
+    right: -15px;
+  }
+
+  .scroll-btn:hover {
+    background: #f0f0f0;
+  }
+
+  .gst-toggle {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 2;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: 0.4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+  }
+
+  input:checked + .slider {
+    background-color: #0d6efd;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #0d6efd;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s ease-in-out;
+    z-index: 9999;
+  }
+
+  .toast.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .listing-card {
+    border-radius: 16px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    background: #fff;
+    border: none;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .listing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-img-top {
+    height: 220px;
+    object-fit: cover;
+  }
+
+  .card-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+
+  .price {
+    font-weight: 600;
+    color: #0d6efd;
+  }
+
+  .btn-view-details {
+    margin-top: 10px;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 25px;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: inline-block;
+  }
+
   .btn-view-details:hover {
-    background-color: #e7333e;
+    background-color: #084ccf;
     color: #fff;
-    transform: scale(1.03);
   }
 </style>
 
 <% const activeCategory = typeof categoryName !== 'undefined' ? categoryName : null; %>
-
 <% const categories = [
   { name: "Trending", icon: "fa-fire" },
   { name: "Room", icon: "fa-bed" },
@@ -98,42 +205,42 @@
   { name: "Boats", icon: "fa-sailboat" }
 ]; %>
 
-<!-- ========================= CATEGORY FILTER BAR ========================= -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<div class="container py-4 position-relative">
+  <!-- GST Toggle -->
+  <div class="gst-toggle d-flex align-items-center gap-2">
+    <label>GST</label>
+    <label class="switch">
+      <input type="checkbox" id="gstToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
 
-<div class="container mt-5">
-  <div class="d-flex justify-content-between overflow-auto pb-3 border-bottom">
-    <% categories.forEach(cat => { 
-      const isActive = activeCategory === cat.name; %>
-      <a 
-        href="/listings/category/<%= cat.name %>" 
-        class="text-center text-decoration-none px-3 py-2 <% if (isActive) { %> text-primary border-bottom border-2 <% } else { %> text-muted <% } %>">
-        <i class="fa <%= cat.icon %> fa-lg d-block mb-1"></i>
-        <small><%= cat.name %></small>
-      </a>
-    <% }) %>
+  <!-- CATEGORY FILTER SCROLL -->
+  <div class="category-scroll-container">
+    <div class="scroll-btn scroll-left" onclick="scrollCategory('left')"><i class="fas fa-chevron-left"></i></div>
+    <div class="scroll-btn scroll-right" onclick="scrollCategory('right')"><i class="fas fa-chevron-right"></i></div>
 
-    <!-- GST Toggle -->
-    <div class="d-flex align-items-center gst-wrapper">
-      <div class="form-check form-switch m-0">
-        <input class="form-check-input" type="checkbox" role="switch" id="gstToggle">
-      </div>
-      <label class="form-check-label ms-2" for="gstToggle">+18% GST</label>
+    <div class="category-scroll" id="categoryScroll">
+      <% categories.forEach(cat => {
+        const isActive = activeCategory === cat.name;
+      %>
+        <a href="/listings/category/<%= cat.name %>" class="category-pill <% if (isActive) { %> category-active <% } %>">
+          <i class="fa <%= cat.icon %> me-2"></i> <%= cat.name %>
+        </a>
+      <% }) %>
     </div>
   </div>
-</div>
 
-<!-- ========================= PAGE HEADING ========================= -->
-<div class="container mb-4 mt-3">
-  <% if (typeof categoryName !== 'undefined') { %>
-    <h2>Category: <%= categoryName %></h2>
-  <% } else { %>
-    <h2>All Listings</h2>
-  <% } %>
-</div>
+  <!-- PAGE TITLE -->
+  <div class="mt-4 mb-3">
+    <% if (typeof categoryName !== 'undefined') { %>
+      <h3>Explore <%= categoryName %> Hotels</h3>
+    <% } else { %>
+      <h3>All Hotel Listings</h3>
+    <% } %>
+  </div>
 
-<!-- ========================= LISTINGS GRID ========================= -->
-<div class="container">
+  <!-- LISTINGS -->
   <div class="row">
     <% if (alllisting.length === 0) { %>
       <div class="col-12">
@@ -143,38 +250,70 @@
 
     <% alllisting.forEach(listing => { %>
       <div class="col-md-4 mb-4">
-  <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
-    <div class="card shadow-sm listing-card" data-category="<%= listing.category %>">
-      <img src="<%= listing.image.url %>" class="card-img-top" style="height: 250px; object-fit: cover;" alt="<%= listing.title %>">
-      <div class="card-body">
-        <h5 class="card-title"><%= listing.title %></h5>
-        <p class="card-text"><%= listing.description.length > 100 ? listing.description.substring(0, 100) + '...' : listing.description %></p>
-        <p><strong>Price:</strong> ₹<span class="price"><%= listing.price %></span></p>
-        <p><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></p>
+        <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+          <div class="card listing-card">
+            <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= listing.title %></h5>
+              <p class="card-text"><%= listing.description.length > 80 ? listing.description.substring(0, 80) + '...' : listing.description %></p>
+              <p><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></p>
+              <p><strong>Price:</strong> ₹<span class="price"><%= listing.price %></span></p>
+              <a class="btn-view-details" href="/listings/<%= listing._id %>">View Details</a>
+            </div>
+          </div>
+        </a>
       </div>
-    </div>
-  </a>
-</div>
-
     <% }) %>
   </div>
 </div>
 
-<!-- ========================= GST Script ========================= -->
+<!-- Toast -->
+<div id="gstToast" class="toast">GST Enabled</div>
+
+<!-- ========================= SCRIPT ========================= -->
 <script>
   const gstToggle = document.getElementById("gstToggle");
   const priceElements = document.querySelectorAll(".price");
+  const toast = document.getElementById("gstToast");
 
   gstToggle.addEventListener("change", () => {
+    const isChecked = gstToggle.checked;
+
     priceElements.forEach(el => {
-      const originalPrice = parseFloat(el.innerText);
-      if (gstToggle.checked) {
-        const gstPrice = (originalPrice * 1.18).toFixed(2) + "+18 GST Added";
+      const originalPrice = parseFloat(el.getAttribute('data-base') || el.innerText);
+      if (isChecked) {
+        const gstPrice = (originalPrice * 1.18).toFixed(2);
         el.innerText = gstPrice;
       } else {
-        const basePrice = (originalPrice / 1.18).toFixed(2);
-        el.innerText = basePrice;
+        el.innerText = originalPrice.toFixed(2);
       }
     });
+
+    showToast(isChecked ? "GST Enabled (+18%)" : "GST Removed");
   });
+
+  // Save original price
+  priceElements.forEach(el => {
+    el.setAttribute('data-base', el.innerText);
+  });
+
+  function showToast(message) {
+    toast.innerText = message;
+    toast.classList.add("show");
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2000);
+  }
+
+  // Category slider scroll
+  const scrollContainer = document.getElementById('categoryScroll');
+
+  function scrollCategory(direction) {
+    const scrollAmount = 150;
+    if (direction === 'left') {
+      scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    } else {
+      scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  }
 </script>
